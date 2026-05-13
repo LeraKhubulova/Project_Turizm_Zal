@@ -1,5 +1,7 @@
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -12,15 +14,16 @@ html {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-    position: relative;
-    min-height: 100%;
-}
-
 body {
-    margin-bottom: 60px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
+main {
+    flex: 1;
+}
 
 /*------------------- шапка ------------------*/
 
@@ -74,32 +77,13 @@ body {
     width: 100%;
 }
 
-
-/*------------------- подвал с детьми ------------------*/
-
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    flex: 1;
-}
-
-.main-footer {
-    margin-top: auto;
-}
+/*------------------- подвал ------------------*/
 
 .main-footer {
     background-color: #363636;
     color: #fff;
     padding: 40px 5% 20px;
-    margin-top: 60px;
+    margin-top: auto;
 }
 
 .footer-container {
@@ -120,6 +104,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    align-items: flex-start;
 }
 
 .footer-block h4 {
@@ -133,6 +118,8 @@ main {
     text-decoration: none;
     font-size: 14px;
     transition: opacity 0.2s;
+    display: block;           
+    width: fit-content;       
 }
 
 .footer-block a:hover {
@@ -208,7 +195,109 @@ main {
 }
 
 .back-to-top:hover {
-    background-color: #f5f5f5;
-        
+    background-color: #ddd;
     text-decoration: none;
+}
+
+
+/*------------------- главная ------------------*/
+.content-wrapper {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin: 80px 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+
+.content-wrapper .carousel {
+    margin-bottom: 0;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+}
+
+
+.content-padding {
+    padding: 30px;
+}
+
+
+.hall-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.hall-card:hover {
+    transform: translateY(-5px);
+}
+
+.hall-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.hall-card-body {
+    padding: 20px;
+}
+
+.hall-card-body h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.hall-card-body p {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+
+.btn-custom {
+    display: inline-block;
+    background-color: #363636;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #555;
+    color: white;
+    transform: translateX(5px);
+}
+
+
+.stats-section {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #363636;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+
+
+.map-container {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.map-address p {
+    margin: 5px 0;
+    color: #555;
 }
