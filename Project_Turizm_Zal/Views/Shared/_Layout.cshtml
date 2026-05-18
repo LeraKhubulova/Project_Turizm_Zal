@@ -14,7 +14,7 @@
 
         <nav style="background-color: #363636;">
             <div class="container-fluid px-5">
-                <div style="display: flex; align-items: center; justify-content: space-between; gap: 30px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap:30px;">
               
                     <a class="navbar-brand" asp-controller="Home" asp-action="Index">
                         <img src="/images/logo3.png" alt="Лого" style="height: 60px;" class="d-inline-block align-top me-2">
@@ -30,9 +30,17 @@
                     </div>
 
                
-                    <div class="search-wrapper">
-                        <input class="search-input" type="search" name="q" placeholder="Поиск...">
-                        <img src="/images/lupa.png" alt="Лупа" class="search-icon-inside">
+                    <div class="auth-buttons">
+                        @if (ViewBag.IsLoggedIn == true)
+                        {
+                            <span class="user-name">@ViewBag.UserName</span>
+                            <a class="btn-logout" asp-controller="Home" asp-action="Logout">Выйти</a>
+                        }
+                        else
+                        {
+                            <a class="btn-login" asp-controller="Home" asp-action="Auth">Вход</a>
+                            <a class="btn-register" asp-controller="Home" asp-action="Auth">Регистрация</a>
+                        }
                     </div>
                 </div>
             </div>
