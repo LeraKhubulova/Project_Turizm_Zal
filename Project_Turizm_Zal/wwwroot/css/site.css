@@ -19,6 +19,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 main {
@@ -275,6 +276,47 @@ main {
     margin: 5px 0;
     color: #555;
 }
+/*------------------- для слайдера ------------------*/
+.full-width-carousel {
+    margin-top: 0;
+    position: relative;
+}
+
+.full-width-carousel .carousel-item img {
+    height: 85vh;
+    object-fit: cover;
+    width: 100%;
+}
+
+
+.carousel-gradient-overlay {
+    position: relative;
+}
+
+.carousel-gradient-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), white);
+    pointer-events: none;
+    z-index: 2;
+}
+
+
+.carousel-caption h3 {
+    font-size: 3rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+}
+
+.carousel-caption p {
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.5);
+}
 
 /*------------------- регистрация ------------------*/
 
@@ -363,26 +405,39 @@ main {
     font-weight: 500;
 }
 
-
 .btn-logout {
-    display: inline-block;
     padding: 8px 24px;
-    min-width: 100px;
-    text-align: center;
-    border-radius: 8px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1.5px solid;
-    text-decoration: none;
+    border: none;
+    font-family: inherit;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: color 0.3s ease;
+    border-radius: 8px;
+    min-width: 100px;
+    text-align: center;
     background-color: transparent;
     color: #ff6b6b;
-    border-color: #ff6b6b;
+    border: 1.5px solid #ff6b6b;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.btn-logout:hover {
+.btn-logout::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
     background-color: #ff6b6b;
-    color: white;
+    transition: height 0.35s ease;
+    z-index: -1;
 }
 
+.btn-logout:hover::before {
+    height: 100%;
+}
