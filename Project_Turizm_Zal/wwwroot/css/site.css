@@ -4,12 +4,6 @@ html {
     min-height: 100%;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -19,58 +13,181 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 main {
     flex: 1;
 }
 
-/*------------------- шапка ------------------*/
+/*------------------- шапка (светлая) ------------------*/
+.light-nav {
+    background-color: #ffffff;
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #e8e8e8;
+}
 
-.navbar-brand {
+.nav-container-wide {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.nav-brand {
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
     margin-left: 30px;
 }
 
-.nav-link {
-    position: relative;
-    text-decoration: none;
+.nav-brand:hover {
+    opacity: 0.8;
 }
 
-.nav-link::after {
+.logo-img {
+    height: 50px;
+    width: auto;
+    display: block;
+}
+
+.nav-links {
+    display: flex;
+    gap: 70px;
+    flex-wrap: wrap;
+}
+
+.nav-link-dark {
+    position: relative;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1f1f1f;
+    letter-spacing: 0.5px;
+    padding: 4px 0;
+    transition: color 0.2s ease;
+}
+
+.nav-link-dark::after {
     content: "";
     position: absolute;
     bottom: -3px;
     left: 0;
     width: 0;
     height: 2px;
-    background-color: white;
-    transition: width 0.3s ease;
+    background-color: #1f1f1f;
+    transition: width 0.3s ease, background-color 0.2s ease;
 }
 
-.nav-link:hover::after {
+.nav-link-dark:hover::after {
     width: 100%;
+    background-color: #d4af37 !important;
+}
+
+.nav-link-dark:hover {
+    opacity: 0.85;
+    color: #d4af37 !important;
+}
+
+/*------------------- регистрация ------------------*/
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn-login, .btn-register {
+    padding: 8px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid;
+    border-radius: 8px;
+    background-color: transparent;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+    text-decoration: none !important;
+    display: inline-block;
+    text-align: center;
+    font-family: inherit;
+    z-index: 1;
+}
+
+.btn-login::before, .btn-register::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    transition: height 0.35s ease;
+    z-index: -1;
+}
+
+.btn-login:hover::before,
+.btn-register:hover::before {
+    height: 100%;
+}
+
+.btn-login {
+    color: #d4c5a9;
+    border-color: #d4c5a9;
+}
+
+.btn-login::before {
+    background-color: #d4c5a9;
+}
+
+.btn-login:hover {
+    color: #1f1f1f;
+}
+
+.btn-register {
+    color: #f5f0e8;
+    border-color: #8b7355;
+    background-color: #8b7355;
+}
+
+.btn-register::before {
+    background-color: #a68a6b;
+}
+
+.btn-register:hover {
+    color: #ffffff;
+    border-color: #a68a6b;
 }
 
 /*------------------- подвал ------------------*/
-
 .main-footer {
-    background-color: #363636;
+    background-color: #0a0a0a;
     color: #fff;
-    padding: 40px 5% 20px;
+    padding: 60px 0 40px;
     margin-top: auto;
 }
 
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 5%;
     position: relative;
 }
 
 .footer-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
+    gap: 60px;
     align-items: start;
     margin-bottom: 30px;
 }
@@ -93,8 +210,8 @@ main {
     text-decoration: none;
     font-size: 14px;
     transition: opacity 0.2s;
-    display: block;           
-    width: fit-content;       
+    display: block;
+    width: fit-content;
 }
 
 .footer-block a:hover {
@@ -155,59 +272,31 @@ main {
     opacity: 0.5;
 }
 
-.back-to-top {
-    position: absolute;
-    right: 0;
-    top: -40px;
-    background-color: #363636;
-    padding: 10px 20px;
-    color: white;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: bold;
-    transition: all 0.2s ease;
-    display: inline-block;
+/*------------------- главная (контент) ------------------*/
+.content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
 }
 
-.back-to-top:hover {
-    background-color: #ddd;
-    text-decoration: none;
+.content-container .row,
+.content-container .stats-section,
+.content-container .map-section {
+    margin-left: 0;
+    margin-right: 0;
 }
-
-
-/*------------------- главная ------------------*/
-.content-wrapper {
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    margin: 80px 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-
-.content-wrapper .carousel {
-    margin-bottom: 0;
-    border-radius: 5px 5px 0 0;
-    overflow: hidden;
-}
-
-
-.content-padding {
-    padding: 30px;
-}
-
 
 .hall-card {
     background: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
     height: 100%;
 }
 
 .hall-card:hover {
-    transform: translateY(-5px);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.45);
 }
 
 .hall-img {
@@ -228,24 +317,45 @@ main {
 .hall-card-body p {
     color: #666;
     margin-bottom: 15px;
-}
 
+}
 
 .btn-custom {
     display: inline-block;
-    background-color: #363636;
-    color: white;
-    padding: 8px 20px;
-    border-radius: 25px;
-    text-decoration: none;
+    padding: 8px 24px;
     font-size: 14px;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid #363636;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #363636;
+    text-decoration: none;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+    z-index: 1;
+}
+
+.btn-custom::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: #363636;
+    transition: height 0.35s ease;
+    z-index: -1;
+}
+
+.btn-custom:hover::before {
+    height: 100%;
 }
 
 .btn-custom:hover {
-    background-color: #555;
-    color: white;
-    transform: translateX(5px);
+    color: #ffffff;
 }
 
 
@@ -266,31 +376,30 @@ main {
     font-size: 0.9rem;
 }
 
-
-
 .map-container {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.map-container iframe {
+    width: 100%;
 }
 
 .map-address p {
     margin: 5px 0;
     color: #555;
 }
-/*------------------- для слайдера ------------------*/
+
+/*------------------- слайдер главная ------------------*/
 .full-width-carousel {
-    margin-top: 0;
     position: relative;
+    margin-bottom: 30px;
 }
 
 .full-width-carousel .carousel-item img {
-    height: 85vh;
-    object-fit: cover;
     width: 100%;
-}
-
-
-.carousel-gradient-overlay {
-    position: relative;
+    height: auto;
+    max-height: 85vh;
+    object-fit: cover;
 }
 
 .carousel-gradient-overlay::after {
@@ -299,145 +408,57 @@ main {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 120px;
-    background: linear-gradient(to bottom, rgba(255,255,255,0), white);
+    height: 60px; 
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.8)); 
     pointer-events: none;
     z-index: 2;
 }
 
-
 .carousel-caption h3 {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 800;
     text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
 }
 
 .carousel-caption p {
-    font-size: 1.4rem;
+    font-size: 1rem;
     font-weight: 600;
     text-shadow: 1px 1px 6px rgba(0,0,0,0.5);
 }
 
-/*------------------- регистрация ------------------*/
 
-.auth-buttons {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.btn-login, .btn-register {
-    padding: 8px 24px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    font-family: inherit;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-    transition: color 0.3s ease;
-    border-radius: 8px;
-    min-width: 100px;
+.welcome-section {
     text-align: center;
+    margin: 60px 0 50px;
 }
 
-.btn-login {
-    background-color: transparent;
-    color: #d4c5a9;
-    border: 1.5px solid #d4c5a9;
-}
-
-.btn-login::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 0%;
-    background-color: #d4c5a9;
-    transition: height 0.35s ease;
-    z-index: -1;
-}
-
-.btn-login:hover::before {
-    height: 100%;
-}
-
-.btn-login:hover {
-    color: #2c2c2c;
-}
-
-.btn-register {
-    background-color: #8b7355;
-    color: #f5f0e8;
-    border: 1.5px solid #8b7355;
-}
-
-.btn-register::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 0%;
-    background-color: #a68a6b;
-    transition: height 0.35s ease;
-    z-index: -1;
-}
-
-.btn-register:hover::before {
-    height: 100%;
-}
-
-.btn-register:hover {
-    color: #ffffff;
-    border-color: #a68a6b;
-}
-
-.btn-login, .btn-register {
-    text-decoration: none !important;
-}
-
-.user-name {
-    color: #d4c5a9;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.btn-logout {
-    padding: 8px 24px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    font-family: inherit;
+.welcome-section h1 {
+    font-size: 3.8rem;
+    font-weight: 600; 
+    letter-spacing: -0.5px;
+    color: #1f1f1f;
+    margin-bottom: 15px;
     position: relative;
-    z-index: 1;
-    overflow: hidden;
-    transition: color 0.3s ease;
-    border-radius: 8px;
-    min-width: 100px;
-    text-align: center;
-    background-color: transparent;
-    color: #ff6b6b;
-    border: 1.5px solid #ff6b6b;
-    text-decoration: none;
     display: inline-block;
 }
 
-.btn-logout::before {
+.welcome-section h1::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 0%;
-    background-color: #ff6b6b;
-    transition: height 0.35s ease;
-    z-index: -1;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background-color: #d4af37;
 }
 
-.btn-logout:hover::before {
-    height: 100%;
+.welcome-section .lead {
+    font-size: 1.3rem; 
+    font-weight: 400;
+    color: #2c3e3f; 
+    max-width: 750px;
+    margin: 30px auto 0;
+    line-height: 1.4;
+    letter-spacing: 0.2px;
 }

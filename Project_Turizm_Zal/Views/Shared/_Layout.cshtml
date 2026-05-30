@@ -7,122 +7,71 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Project_Turizm_Zal.styles.css" asp-append-version="true" />
-    
 </head>
 <body>
     <header>
-
-        <nav style="background-color: #363636;">
-            <div class="container-fluid px-5">
-                <div style="display: flex; align-items: center; justify-content: space-between; gap:40px;">
-              
-                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                        <img src="/images/logo3.png" alt="Лого" style="height: 60px;">
+        <nav class="light-nav">
+            <div class="nav-container-wide">
+                
+                <div class="nav-container">
+                    <a class="nav-brand" asp-controller="Home" asp-action="Index">
+                        <img src="/images/logo/logo.png" alt="Лого" class="logo-img">
                     </a>
-
-                  @* пока не создала контроллеры и методы, чтоб страницы работали. Работаю пока над видом страницы*@ 
-                    <div style="display: flex; gap: 40px;">
-                        <a class="nav-link text-white" asp-controller="Home" asp-action="Index">Главная</a>
-                        <a class="nav-link text-white" asp-controller="Halls" asp-action="Index">Залы</a>
-                        <a class="nav-link text-white" asp-controller="Exhibits" asp-action="Index">Экспонаты</a>
-                        <a class="nav-link text-white" asp-controller="Home" asp-action="About">О музее</a>
+                    <div class="nav-links">
+                        <a class="nav-link-dark" asp-controller="Home" asp-action="Index">Главная</a>
+                        <a class="nav-link-dark" asp-controller="Halls" asp-action="Index">Залы</a>
+                        <a class="nav-link-dark" asp-controller="Exhibits" asp-action="Index">Экспонаты</a>
+                        <a class="nav-link-dark" asp-controller="Home" asp-action="About">О музее</a>
                     </div>
-
-               
                     <div class="auth-buttons">
-                        @* @if (ViewBag.IsLoggedIn == true)
-                        {
-                            <span class="user-name">@ViewBag.UserName</span>
-                            <a class="btn-logout" asp-controller="Home" asp-action="Logout">Выйти</a>
-                        }
-                        else
-                        {
-                            <a class="btn-login" asp-controller="Home" asp-action="Auth">Вход</a>
-                            <a class="btn-register" asp-controller="Home" asp-action="Auth">Регистрация</a>
-                        } *@
-                        @if (ViewBag.IsLoggedIn == true)
-                        {
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <img src="/images/profile_ikon/default-avatar.png" alt="Аватар" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                                <span class="user-name">@ViewBag.UserName</span>
-                                <a class="btn-logout" asp-controller="Home" asp-action="Logout">Выйти</a>
-                            </div>
-                        }
-                        else
-                        {
-                            <a class="btn-login" asp-controller="Home" asp-action="Auth">Вход</a>
-                            <a class="btn-register" asp-controller="Home" asp-action="Auth">Регистрация</a>
-                        }
+                        <a class="btn-login" asp-controller="Home" asp-action="Auth">Вход</a>
+                        <a class="btn-register" asp-controller="Home" asp-action="Auth">Регистрация</a>
                     </div>
                 </div>
             </div>
         </nav>
     </header>
 
-
-  
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
-    
-
 
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-grid">
-             
                 <div class="footer-block">
                     <a href="#" class="footer-logo">
-                        <img src="/images/logo3.png" alt="Лого" style="height: 50px;">
+                        <img src="/images/logo/logo.png" alt="Лого" style="height: 50px;">
                     </a>
-                    <p class="footer-text">
-                        Виртуальный музей — погружение в мир искусства и культуры.
-                    </p>
+                    <p class="footer-text">Виртуальный музей — погружение в мир искусства и культуры.</p>
                     <div class="footer-social">
-                         @* господи че то там на странице с картинками написано не заюудьте авторство указать *@
-                        <a href="#"><img src="/images/vk.png" alt="запрещенно РФ"></a>
-                        <a href="#"><img src="/images/tg.png" alt="запрещенно РФ"></a>
-                        <a href="#"><img src="/images/watcap.png" alt="запрещенно РФ"></a>
+                        <a href="#"><img src="/images/vk.png" alt="VK"></a>
+                        <a href="#"><img src="/images/tg.png" alt="Telegram"></a>
+                        <a href="#"><img src="/images/watcap.png" alt="WhatsApp"></a>
                     </div>
                 </div>
-
-             
                 <div class="footer-block">
                     <h4>Навигация</h4>
-                    @* пока не создала контроллеры и методы, чтоб страницы работали. Работаю пока над видом страницы*@
                     <a asp-controller="Home" asp-action="Index">Главная</a>
                     <a asp-controller="Halls" asp-action="Index">Залы</a>
                     <a asp-controller="Exhibits" asp-action="Index">Экспонаты</a>
                     <a asp-controller="Home" asp-action="About">О музее</a>
                 </div>
-
-            
                 <div class="footer-block">
                     <h4>Режим работы</h4>
-                    <p>Пн-Пт: 10:00 - 19:00</p>
-                    <p>Сб-Вс: 11:00 - 18:00</p>
-                    <p>Выходной: еври дей мы ленивые</p>
+                    <p>Пт: 10:00 - 18:00</p>
+                    <p>Вт-Вс: 10:00 - 19:00</p>
+                    <p>Выходной: Понедельник</p>
                 </div>
             </div>
-
-           
             <div class="footer-copyright-line"></div>
-
-          
             <div class="footer-bottom-row">
-                <div class="footer-copyright">
-                    © 2026 Все права защищены.
-                </div>
-                <div class="footer-credits">
-                    Сделано в студии самой лучшей
-                </div>
+                <div class="footer-copyright">© 2026 Все права защищены.</div>
+                <div class="footer-credits">Сделано в студии самой лучшей</div>
             </div>
-
-           
-            <a href="#" class="back-to-top">В НАЧАЛО</a>
         </div>
     </footer>
-   
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -30,6 +30,10 @@ namespace Project_Turizm_Zal.Controllers
         {
             return View();
         }
+        public IActionResult About()
+        {
+            return View();
+        }
 
         public IActionResult Auth()
         {
