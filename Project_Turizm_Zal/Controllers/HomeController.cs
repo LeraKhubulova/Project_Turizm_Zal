@@ -1,32 +1,29 @@
 using System.Diagnostics;
+using System.Threading;
 using Microsoft.AspNetCore.Mvc;
+using Project_Turizm_Zal.Data;
 using Project_Turizm_Zal.Models;
+using Project_Turizm_Zal.Services;
 
 namespace Project_Turizm_Zal.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IHallService hallService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IHallService hallService)
         {
-            _logger = logger;
+            this.hallService = hallService;
         }
 
         public IActionResult Index()
         {
             return View();
         }
-
-        public IActionResult Privacy()
+        public IActionResult Hall(Guid id, CancellationToken cancellationToken)
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var hall = hallService.GetHallById(id, cancellationToken).Result;
+            return RedirectToAction("Index", "Hall", hall);
         }
     }
 }
