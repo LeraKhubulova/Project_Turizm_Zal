@@ -146,20 +146,7 @@
         color: #777;
     }
 
-    .container h3 {
-        text-align: left; 
-        font-weight: 800; 
-        font-size: 1.8rem; 
-        margin-bottom: 25px;
-        letter-spacing: -0.3px; 
-        color: #1f1f1f; 
-        border-left: 4px solid #d4af37; 
-        padding-left: 20px;
-    }
-
-    
-
-
+   
     .gallery-grid {
         display: grid;
         grid-template-columns: 1.5fr 1fr;
@@ -203,23 +190,29 @@
         width: 100%;
     }
 
-   
+    .section-title {
+        text-align: left;
+        font-weight: 800;
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+        letter-spacing: -0.3px;
+        color: #1f1f1f;
+        border-left: 4px solid #bababa;
+        padding-left: 20px;
+    }
+
 </style>
 
 
 
 <div class="about-hero">
-    <div class="container">
+    <div class="content-container">
         <h1>Национальный музей<br>Республики Северная Осетия–Алания</h1>
         <p>Один из старейших музеев России — хранитель истории, культуры и традиций осетинского народа с 1893 года</p>
     </div>
 </div>
 
-<div class="container">
-
-    
-
-    
+<div class="content-container">
     <div class="facts-grid">
         <div class="fact-card"><div class="fact-number">1893</div><div class="fact-label">год основания</div></div>
         <div class="fact-card"><div class="fact-number">221 363</div><div class="fact-label">единиц хранения</div></div>
@@ -230,97 +223,97 @@
     <div class="section-divider"></div>
     <div class="history-block">
         <div class="history-text">
-            <h3>Более 130 лет истории</h3>
+            <h3 class="section-title">Более 130 лет истории</h3>
             <p><strong>1893 год</strong> — основание «Терского областного музея» по инициативе культурной общественности Владикавказа. Музей отмечен в энциклопедии Брокгауза и Эфрона как один из 36 областных музеев России.</p>
             <p><strong>1902 год</strong> — начало строительства здания в Соборном переулке (ныне ул. Ботоева, 3) по проекту архитектора И.В. Рябикина. Торжественная передача здания музею состоялась 21 января 1927 года.</p>
             <p><strong>1918–1936 годы</strong> — музей переходит в ведение Комиссариата народного образования, затем становится Северо-Кавказским институтом краеведения, а позже — Северо-Осетинским областным краеведческим музеем.</p>
             <p><strong>С 1967 года</strong> — музей размещается в историческом особняке на <strong>проспекте Мира, 11</strong> (памятник культурного наследия, ранее принадлежавший предпринимателю Я. Ходякову).</p>
             <p><strong>2018–2020 годы</strong> — масштабная реконструкция и реставрация зданий на проспекте Мира, 7–11 (особняк Ходякова и корпус бывшей табачной фабрики Б. Вахтангова).</p>
             <p><strong>9 сентября 2020 года</strong> — открытие обновлённой экспозиции, построенной на тематико-хронологическом принципе: от древнейших времён до XXI века, прослеживающей этногенез осетинского народа и этапы социально-экономического развития Осетии.</p>
-            <p><strong>2024 год</strong> — Национальный музей РСО-Алания объединяет 13 филиалов, а его фонды насчитывают более 221 тысячи единиц хранения. Музей становится крупным культурно-образовательным центром региона.</p>
+            
         </div>
         <div class="history-image">
-            <img src="/images/about/museum-facad.png" alt="Здание музея" onerror="this.src='https://via.placeholder.com/500x350?text=Историческое здание'">
+            <img src="/images/about/national_museum/national_museum.png" alt="Здание музея" onerror="this.src='https://via.placeholder.com/500x350?text=Историческое здание'">
             <div class="photo-caption">Главное здание на проспекте Мира, 11</div>
         </div>
     </div>
 
     <div class="section-divider"></div>
 
-    <h3>Наша музейная сеть — 13 филиалов</h3>
+    <h3 class="section-title">Наша музейная сеть — 11 филиалов</h3>
     <div class="branches-grid">
-        <a href="#" class="branch-card">
-            <img src="/images/about/branches/kosta.jpg" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=🏛️'">
+        <a href="https://vmuzey.com/museum/memorialnyy-dom-muzey-k-l-hetagurova" class="branch-card">
+            <img src="/images/about/branches/house_khetagurov.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Дом-музей Коста Хетагурова'">
             <div class="branch-info">
                 <div class="branch-name">Дом-музей Коста Хетагурова</div>
                 <div class="branch-location">Владикавказ / с. Нар</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/pliev.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=⭐'">
+        <a href="https://idemvmuzei.ru/catalog/museum/memorialnyj-dom-muzej-i-a-plieva" class="branch-card">
+            <img src="/images/about/branches/Pliev.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Дом-музей генерала И.А. Плиева'">
             <div class="branch-info">
                 <div class="branch-name">Дом-музей генерала И.А. Плиева</div>
                 <div class="branch-location">Владикавказ</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/mamsurov.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=⚔️'">
+        <a href="https://iryston.tv/teleproject_release/dom-muzej-hadzhi-umara-mamsurova-chto-dalshe/" class="branch-card">
+            <img src="/images/about/branches/Mamsurov.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Музей генерала Х.-У.Дж. Мамсурова'">
             <div class="branch-info">
                 <div class="branch-name">Музей генерала Х.-У.Дж. Мамсурова</div>
                 <div class="branch-location">с. Ольгинское (на реконструкции)</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/tsagolov.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=🔥'">
+        <a href="https://idemvmuzei.ru/en/catalog/museum/istoriko-memorialnyj-dom-muzej-g-cagolova" class="branch-card">
+            <img src="/images/about/branches/Tsagolov.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Музей Г.А. Цаголова'">
             <div class="branch-info">
                 <div class="branch-name">Музей Г.А. Цаголова</div>
                 <div class="branch-location">Дигора</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/suar.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=🗻'">
+        <a href="https://idemvmuzei.ru/catalog/museum/majramadagskij-muzej-zasitnikov-suarskogo-usela" class="branch-card">
+            <img src="/images/about/branches/syarski_yshelie.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Музей защитников Суарского ущелья'">
             <div class="branch-info">
                 <div class="branch-name">Музей защитников Суарского ущелья</div>
                 <div class="branch-location">с. Майрамадаг</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/vladikavkaz.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=🏙️'">
+        <a href="https://vmuzey.com/museum/muzey-istorii-goroda-vloadikavkaz" class="branch-card">
+            <img src="/images/about/branches/historyOsetia.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Музей истории Владикавказа'">
             <div class="branch-info">
                 <div class="branch-name">Музей истории Владикавказа</div>
                 <div class="branch-location">Владикавказ</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/language.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=📖'">
+        <a href="https://www.culture.ru/institutes/69903/muzei-osetinskoi-literatury-im-k-l-khetagurova" class="branch-card">
+            <img src="/images/about/branches/osetia_literature.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Музей осетинского языка и литературы'">
             <div class="branch-info">
                 <div class="branch-name">Музей осетинского языка и литературы</div>
                 <div class="branch-location">Владикавказ</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/ardon.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=🎓'">
+        <a href="https://www.culture.ru/institutes/20797/muzei-istorii-kultury-i-narodnogo-obrazovaniya-g-ardon" class="branch-card">
+            <img src="/images/about/branches/ardon.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Музей народного образования'">
             <div class="branch-info">
                 <div class="branch-name">Музей народного образования</div>
                 <div class="branch-location">Ардон</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/mozdok.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=🏺'">
+        <a href="https://www.culture.ru/institutes/22110/mozdokskii-muzei-kraevedeniya" class="branch-card">
+            <img src="/images/about/branches/mozdok.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Музей краеведения'">
             <div class="branch-info">
                 <div class="branch-name">Музей краеведения</div>
                 <div class="branch-location">Моздок</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/nature.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=🌿'">
+        <a href="https://vmuzey.com/museum/otdel-prirody-nacionalnogo-muzeya-rso-alaniya" class="branch-card">
+            <img src="/images/about/branches/otdel_priroda.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Отдел природы'">
             <div class="branch-info">
                 <div class="branch-name">Отдел природы</div>
                 <div class="branch-location">Владикавказ</div>
             </div>
         </a>
-        <a href="#" class="branch-card">
-            <img src="/images/branches/dargavs.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=💀'">
+        <a href="https://bolshayastrana.com/dostoprimechatelnosti/severnaya-osetiya/gorod-mertvyh-dargavs-114" class="branch-card">
+            <img src="/images/about/branches/dargavs.png" class="branch-icon" onerror="this.src='https://via.placeholder.com/48?text=Даргавский некрополь «Город мёртвых'">
             <div class="branch-info">
                 <div class="branch-name">Даргавский некрополь «Город мёртвых»</div>
                 <div class="branch-location">с. Даргавс</div>
@@ -331,21 +324,21 @@
     <div class="section-divider"></div>
 
     
-    <h3 class="mb-4">Фотогалерея</h3>
+    <h3 class="section-title">Фотогалерея</h3>
     <div class="gallery-grid">
         <div class="gallery-main">
-            <img id="mainGalleryImg" src="/images/about/main.jpg" alt="Основное фото"
+            <img id="mainGalleryImg" src="/images/about/fhotoGallery/main.png" alt="Основное фото"
                  onerror="this.src='https://via.placeholder.com/800x600?text=Основное+фото'">
         </div>
         <div class="gallery-thumbs">
-            <img src="/images/about/thumb1.jpg" alt="Миниатюра 1" data-img="/images/about/gallery1.jpg"
-                 onerror="this.src='https://via.placeholder.com/200x150?text=Фото+1'">
-            <img src="/images/about/thumb2.jpg" alt="Миниатюра 2" data-img="/images/about/gallery2.jpg"
-                 onerror="this.src='https://via.placeholder.com/200x150?text=Фото+2'">
-            <img src="/images/about/thumb3.jpg" alt="Миниатюра 3" data-img="/images/about/gallery3.jpg"
-                 onerror="this.src='https://via.placeholder.com/200x150?text=Фото+3'">
-            <img src="/images/about/thumb4.jpg" alt="Миниатюра 4" data-img="/images/about/gallery4.jpg"
-                 onerror="this.src='https://via.placeholder.com/200x150?text=Фото+4'">
+            <img src="/images/about/fhotoGallery/thumb1.png" alt="Миниатюра 1" data-img="/images/about/fhotoGallery/gallery1.png"
+                 onerror="this.src='https://via.placeholder.com/200x150?text=Фото1'">
+            <img src="/images/about/fhotoGallery/thumb2.png" alt="Миниатюра 2" data-img="/images/about/fhotoGallery/gallery2.png"
+                 onerror="this.src='https://via.placeholder.com/200x150?text=Фото2'">
+            <img src="/images/about/fhotoGallery/thumb3.png" alt="Миниатюра 3" data-img="/images/about/fhotoGallery/gallery3.png"
+                 onerror="this.src='https://via.placeholder.com/200x150?text=Фото3'">
+            <img src="/images/about/fhotoGallery/thumb4.png" alt="Миниатюра 4" data-img="/images/about/fhotoGallery/gallery4.png"
+                 onerror="this.src='https://via.placeholder.com/200x150?text=Фото4'">
           
         </div>
     </div>
