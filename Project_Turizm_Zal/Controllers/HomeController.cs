@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using System.Threading;
 using Microsoft.AspNetCore.Mvc;
+using Project_Turizm_Zal.Data;
 using Microsoft.AspNetCore.Mvc.Filters;  
 using Microsoft.AspNetCore.Http;
 using Project_Turizm_Zal.Models;
@@ -9,6 +11,11 @@ namespace Project_Turizm_Zal.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IHallService hallService;
+
+        public HomeController(IHallService hallService)
+        {
+            this.hallService = hallService;
         private readonly ILogger<HomeController> _logger;
         private readonly UserService _userService;
 
@@ -30,6 +37,7 @@ namespace Project_Turizm_Zal.Controllers
         {
             return View();
         }
+        public IActionResult Hall(Guid id, CancellationToken cancellationToken)
         public IActionResult About()
         {
             return View();
@@ -49,13 +57,13 @@ namespace Project_Turizm_Zal.Controllers
         {
             if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
-                return Json(new { success = false, message = "Заполните все поля" });
+                return Json(new { success = false, message = "Г‡Г ГЇГ®Г«Г­ГЁГІГҐ ГўГ±ГҐ ГЇГ®Г«Гї" });
             }
 
             var user = _userService.Login(model.Email, model.Password);
             if (user == null)
             {
-                return Json(new { success = false, message = "Неверный email или пароль" });
+                return Json(new { success = false, message = "ГЌГҐГўГҐГ°Г­Г»Г© email ГЁГ«ГЁ ГЇГ Г°Г®Г«Гј" });
             }
 
             HttpContext.Session.SetString("UserEmail", user.Email);
@@ -70,29 +78,29 @@ namespace Project_Turizm_Zal.Controllers
         {
             if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
-                return Json(new { success = false, message = "Заполните все поля" });
+                return Json(new { success = false, message = "Г‡Г ГЇГ®Г«Г­ГЁГІГҐ ГўГ±ГҐ ГЇГ®Г«Гї" });
             }
 
             if (model.Password != model.ConfirmPassword)
             {
-                return Json(new { success = false, message = "Пароли не совпадают" });
+                return Json(new { success = false, message = "ГЏГ Г°Г®Г«ГЁ Г­ГҐ Г±Г®ГўГЇГ Г¤Г ГѕГІ" });
             }
 
             if (model.Password.Length < 6)
             {
-                return Json(new { success = false, message = "Пароль должен быть не менее 6 символов" });
+                return Json(new { success = false, message = "ГЏГ Г°Г®Г«Гј Г¤Г®Г«Г¦ГҐГ­ ГЎГ»ГІГј Г­ГҐ Г¬ГҐГ­ГҐГҐ 6 Г±ГЁГ¬ГўГ®Г«Г®Гў" });
             }
 
             if (_userService.IsUserExists(model.Email))
             {
-                return Json(new { success = false, message = "Пользователь с таким email уже существует" });
+                return Json(new { success = false, message = "ГЏГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гј Г± ГІГ ГЄГЁГ¬ email ГіГ¦ГҐ Г±ГіГ№ГҐГ±ГІГўГіГҐГІ" });
             }
 
             var user = new User(model.Name, model.Email, model.Password);
 
             if (!_userService.Register(user))
             {
-                return Json(new { success = false, message = "Ошибка при регистрации" });
+                return Json(new { success = false, message = "ГЋГёГЁГЎГЄГ  ГЇГ°ГЁ Г°ГҐГЈГЁГ±ГІГ°Г Г¶ГЁГЁ" });
             }
 
             return Json(new { success = true });
@@ -119,7 +127,8 @@ namespace Project_Turizm_Zal.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var hall = hallService.GetHallById(id, cancellationToken).Result;
+            return RedirectToAction("Index", "Hall", hall);
         }
     }
 }
