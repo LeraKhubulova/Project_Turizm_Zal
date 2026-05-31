@@ -1,0 +1,504 @@
+﻿@{
+    ViewData["Title"] = "Залы";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Виртуальный зал — Древний Египет | Музей вечности</title>
+    <!-- Google Fonts для антиквенного настроения -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (бесплатные иконки) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Leaflet CSS для карты -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #faf3e0; /* цвет папируса */
+            font-family: 'Inter', sans-serif;
+            color: #2b2a27;
+            line-height: 1.5;
+        }
+
+        /* основной контейнер с мягким лимитом ширины */
+        .museum-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+        }
+
+        /* заголовки в античном стиле */
+        h1, h2, h3, .hero-title, .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        h1 {
+            font-size: 4rem;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #b78c3a, #6b4c1a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .subhead {
+            font-size: 1.1rem;
+            color: #7a5a3a;
+            border-left: 3px solid #d4af6a;
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        /* декоративный разделитель */
+        .divider {
+            width: 80px;
+            height: 3px;
+            background: #d4af6a;
+            margin: 1.5rem 0 2rem;
+        }
+
+        /* секция истории + карта */
+        .intro-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            background: #fffef7;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .history-text {
+            flex: 1.2;
+            padding: 2rem 2rem 2rem 2.5rem;
+        }
+
+            .history-text p {
+                margin-bottom: 1.2rem;
+                font-size: 1rem;
+                color: #2c2b26;
+                text-align: justify;
+            }
+
+        .timeline-badge {
+            display: inline-block;
+            background: #e9dccd;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #8b5a2b;
+            margin-bottom: 1rem;
+        }
+
+        .map-container {
+            flex: 1;
+            background: #ece2d0;
+            min-height: 450px;
+        }
+
+        #egypt-map {
+            width: 100%;
+            height: 100%;
+            min-height: 450px;
+            background: #e8ddcc;
+        }
+
+        /* карточки экспонатов — грид с плиткой 
+        .exhibits-title {
+            font-size: 2.2rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .exhibit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .exhibit-card {
+            background: #ffffffdd;
+            backdrop-filter: blur(0px);
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #eeddbb;
+        }
+
+            .exhibit-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 30px rgba(0,0,0,0.15);
+            }
+
+        .card-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            background: #d6c8b0;
+            transition: transform 0.4s ease;
+        }
+
+        .card-content {
+            padding: 1.2rem 1.2rem 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+            color: #4f3a1e;
+        }
+
+        .card-era {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #b87c3a;
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: #3e3a33;
+            line-height: 1.4;
+        }*/
+
+        /* футер с атрибуцией */
+        .footer-note {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #a2865c;
+            border-top: 1px solid #e4d5bd;
+            padding-top: 2rem;
+        }
+
+         /* модальное окно для увеличения экспоната (история/детали)
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            max-width: 750px;
+            width: 90%;
+            background: #fffef2;
+            border-radius: 32px;
+            overflow-y: auto;
+            max-height: 85vh;
+            padding: 1.8rem;
+            position: relative;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #7a5a3a;
+            transition: 0.2s;
+        }
+
+            .close-modal:hover {
+                color: #b16224;
+            }
+
+        .modal-img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: contain;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            background: #e5d8c0;
+        }
+
+        .modal h3 {
+            font-size: 1.9rem;
+            margin-bottom: 0.3rem;
+        }
+        .museum-container
+        {
+            padding: 1rem;
+        }
+
+        h1 {
+            font-size: 2.6rem;
+        }
+
+        .intro-section {
+            flex-direction: column;
+        }
+
+        .map-container, #egypt-map {
+            min-height: 350px;
+        }
+
+        }
+
+        .map-legend {
+            font-size: 0.7rem;
+            background: rgba(255,255,230,0.85);
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-top: 6px;
+        }
+
+        i.fa, i.far {
+            margin-right: 5px;
+            color: #c99f5b;
+        }
+
+        .btn-more {
+            background: none;
+            border: none;
+            color: #b4682d;
+            font-weight: 600;
+            margin-top: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        } */
+    </style>
+</head>
+<body>
+    <div class="museum-container">
+        <!-- Заголовок музея -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap;">
+            <div>
+                <h1>𓋴 𓂧 𓈖𓃀  𓅓𓃀𓂧𓅱<br>ЗАЛ ДРЕВНЕГО ЕГИПТА</h1>
+                <div class="subhead">Виртуальный музей — путешествие по долине Нила сквозь тысячелетия</div>
+            </div>
+            <div style="font-size: 0.85rem; background: #e8ddcc; padding: 6px 14px; border-radius: 60px;">
+                <i class="fas fa-robot"></i> 3D-реконструкции & цифровые коллекции
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- БЛОК: ИСТОРИЯ И КАРТА (как просили: сначала информация и карта) -->
+        <div class="intro-section">
+            <div class="history-text">
+                <div class="timeline-badge"><i class="fas fa-scroll"></i> Цивилизация фараонов</div>
+                <p><strong>Древний Египет</strong> — одна из величайших и долгоживущих цивилизаций древности, возникшая в долине реки Нил около <strong>3100 года до н.э.</strong> после объединения Верхнего и Нижнего Египта. На протяжении трёх тысячелетий страна сохраняла культурное единство: фараоны считались живыми богами, строились пирамиды, храмы и создавались шедевры скульптуры, до сих пор поражающие воображение.</p>
+                <p>Эпоха <strong>Древнего царства (ок. 2686–2181 гг. до н.э.)</strong> — время великих пирамид в Гизе и Дахшуре. <strong>Среднее царство (2055–1650 гг. до н.э.)</strong> принесло расцвет литературы и искусства, а <strong>Новое царство (1550–1069 гг. до н.э.)</strong> стало «золотым веком»: именно тогда жили Эхнатон, Нефертити, Тутанхамон и Рамсес II. Поздний период завершился завоеванием Египта Александром Македонским в 332 г. до н.э., а затем римским владычеством (30 г. до н.э.).</p>
+                <p><i class="fas fa-map-marked-alt"></i> На карте отмечены ключевые археологические зоны: <strong>Гиза</strong> (статуя фараона Менкаура и царицы), <strong>Амарна</strong> (бюст Нефертити), <strong>Фивы/Луксор</strong> (Статуя богини Сехмет) и <strong>Мемфис</strong> (колосс Рамсеса II). Каждый маркер связан с экспонатами нашей коллекции.</p>
+                <div class="map-legend"><i class="fas fa-location-dot"></i> Интерактивная карта — кликните на маркер, чтобы увидеть находки</div>
+            </div>
+            <div class="map-container">
+                <div id="egypt-map"></div>
+            </div>
+        </div>
+
+        <!-- ЗАГОЛОВОК ЭКСПОНАТОВ -->
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap;">
+            <h2 class="exhibits-title"><i class="fas fa-landmark"></i> Сокровищница зала: экспонаты в 3D & детальные описания</h2>
+            <span style="font-size: 0.85rem;">⋆ Нажмите на карточку, чтобы узнать больше ⋆</span>
+        </div>
+
+        @* <!-- ГАЛЕРЕЯ ЭКСПОНАТОВ (9 ключевых экспонатов из предыдущих подборок) -->
+        <div class="exhibit-grid" id="exhibitGrid">
+            <!-- Каждая карточка содержит данные для модального окна -->
+            <div class="exhibit-card" data-name="Бюст Нефертити" data-era="Новое царство, XVIII династия, ок. 1345 г. до н.э." data-desc="Легендарный известняковый бюст царицы Нефертити, найденный в мастерской скульптора Тутмоса в Амарне. Символ красоты и женственности, один из самых копируемых артефактов древности. Практически нетронутая краска, изысканная лепка." data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Nefertiti_Berlin_01.jpg/640px-Nefertiti_Berlin_01.jpg" data-location="Амарна (Тель-эль-Амарна)">
+                <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Nefertiti_Berlin_01.jpg/640px-Nefertiti_Berlin_01.jpg" alt="Бюст Нефертити">
+                <div class="card-content">
+                    <div class="card-title">Бюст Нефертити</div>
+                    <div class="card-era"><i class="far fa-clock"></i> Новое царство, ~1345 г. до н.э.</div>
+                    <div class="card-desc">«Прекрасная пришла» — царица-реформатор, жена Эхнатона. Её образ стал эталоном древнеегипетского искусства.</div>
+                </div>
+            </div>
+
+            <div class="exhibit-card" data-name="Колосс Рамсеса II" data-era="Новое царство, XIX династия, ок. 1279–1213 гг. до н.э." data-desc="10-метровая известняковая статуя «Царя царей» из храма Птаха в Мемфисе. Огромная пропаганда, воплощение военной мощи и величия. Позже перенесён в Музей под открытым небом." data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Memphis_Ramses_II_02.jpg/640px-Memphis_Ramses_II_02.jpg" data-location="Мемфис (Мит-Рахина)">
+                <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Memphis_Ramses_II_02.jpg/640px-Memphis_Ramses_II_02.jpg" alt="Колосс Рамсеса II">
+                <div class="card-content">
+                    <div class="card-title">Колосс Рамсеса II</div>
+                    <div class="card-era"><i class="far fa-clock"></i> Новое царство, ~1250 г. до н.э.</div>
+                    <div class="card-desc">Монументальный известняковый исполин, поверженный, но не сломленный — символ имперской славы фараона.</div>
+                </div>
+            </div>
+
+            <div class="exhibit-card" data-name="Статуя фараона Менкаура и царицы" data-era="Древнее царство, IV династия, ок. 2490–2472 гг. до н.э." data-desc="Группа из серовато-зелёного сланца. Идеализированная скульптура строителя третьей пирамиды в Гизе. Одна из наиболее гармоничных парных статуй." data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Menkaure_and_queen_Statue_Museum_of_Fine_Arts_Boston.jpg/640px-Menkaure_and_queen_Statue_Museum_of_Fine_Arts_Boston.jpg" data-location="Гиза, храм в долине пирамиды Менкаура">
+                <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Menkaure_and_queen_Statue_Museum_of_Fine_Arts_Boston.jpg/640px-Menkaure_and_queen_Statue_Museum_of_Fine_Arts_Boston.jpg" alt="Менкаура и царица">
+                <div class="card-content">
+                    <div class="card-title">Менкаура и царица</div>
+                    <div class="card-era"><i class="far fa-clock"></i> Древнее царство, ~2500 г. до н.э.</div>
+                    <div class="card-desc">Шедевр скульптуры эпохи пирамид. Изысканная обработка камня и каноническая поза.</div>
+                </div>
+            </div>
+
+            <div class="exhibit-card" data-name="Статуя Сехмет (богиня войны)" data-era="Новое царство, правление Аменхотепа III, ~1390–1352 гг. до н.э." data-desc="Львиноголовая богиня из чёрного гранита — защитница фараона и насылательница болезней. Часть серии из сотен статуй, установленных в Фивах." data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Statue_of_the_goddess_Sakhmet_Louvre_1.jpg/640px-Statue_of_the_goddess_Sakhmet_Louvre_1.jpg" data-location="Фивы, храм Мут в Карнаке">
+                <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Statue_of_the_goddess_Sakhmet_Louvre_1.jpg/640px-Statue_of_the_goddess_Sakhmet_Louvre_1.jpg" alt="Сехмет">
+                <div class="card-content">
+                    <div class="card-title">Богиня Сехмет</div>
+                    <div class="card-era"><i class="far fa-clock"></i> Новое царство, XIV в. до н.э.</div>
+                    <div class="card-desc">«Могущественная». Статуя с головой львицы и солнечным диском — грозная охранительница порядка.</div>
+                </div>
+            </div>
+
+            <div class="exhibit-card" data-name="Статуя фараона Тутанхамона (Ка)" data-era="Новое царство, XVIII династия, ок. 1330 г. до н.э." data-desc="Деревянная статуя в чёрной смоле, изображающая жизненную силу (Ка) юного царя. Охраняла вход в гробницу KV62." data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Tutankhamun_ka_statue.jpg/640px-Tutankhamun_ka_statue.jpg" data-location="Долина царей, Фивы">
+                <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Tutankhamun_ka_statue.jpg/640px-Tutankhamun_ka_statue.jpg" alt="Тутанхамон статуя Ка">
+                <div class="card-content">
+                    <div class="card-title">Статуя Ка Тутанхамона</div>
+                    <div class="card-era"><i class="far fa-clock"></i> Новое царство, ~1327 г. до н.э.</div>
+                    <div class="card-desc">Таинственная фигура в чёрном цвете — символ загробного возрождения «золотого фараона».</div>
+                </div>
+            </div>
+
+            <div class="exhibit-card" data-name="Пирамидный комплекс Сенусерта III" data-era="Среднее царство, XII династия, ок. 1870 г. до н.э." data-desc="Цифровая реконструкция комплекса в Дахшуре. Кирпичная пирамида, храмы и гробницы цариц. Новаторская подземная камера." data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Dahshur_map.png/640px-Dahshur_map.png" data-location="Дахшур">
+                <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Dahshur_map.png/640px-Dahshur_map.png" alt="Пирамида Сенусерта III">
+                <div class="card-content">
+                    <div class="card-title">Комплекс Сенусерта III</div>
+                    <div class="card-era"><i class="far fa-clock"></i> Среднее царство, ~1870 г. до н.э.</div>
+                    <div class="card-desc">3D-реконструкция монумента в Дахшуре, где найдены сокровища царских жен.</div>
+                </div>
+            </div>
+
+            <div class="exhibit-card" data-name="Статуя Сенусерта I" data-era="Среднее царство, XII династия, ок. 1950 г. до н.э." data-desc="Статуя фараона, при котором Египет расцвёл. Индивидуализированные черты лица, качественная резьба по дереву и гипсу." data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Senusret_I_Statue_Metropolitan_Museum.jpg/640px-Senusret_I_Statue_Metropolitan_Museum.jpg" data-location="Эль-Лишт, близ пирамиды Сенусерта I">
+                <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Senusret_I_Statue_Metropolitan_Museum.jpg/640px-Senusret_I_Statue_Metropolitan_Museum.jpg" alt="Сенусерт I">
+                <div class="card-content">
+                    <div class="card-title">Сенусерт I</div>
+                    <div class="card-era"><i class="far fa-clock"></i> Среднее царство, ~1950 г. до н.э.</div>
+                    <div class="card-desc">Великий фараон XII династии. Статуя хранит в себе черты мудрого владыки.</div>
+                </div>
+            </div>
+
+            <div class="exhibit-card" data-name="Антропоидный саркофаг (Поздний период)" data-era="XXII–XXVI династии, ок. 800–600 гг. до н.э." data-desc="Деревянный гроб в форме мумии, покрытый росписями с именами богов. Из коллекции Гарвардского музея." data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Coffin_of_Pa-di-mut_Boston_MFA.jpg/640px-Coffin_of_Pa-di-mut_Boston_MFA.jpg" data-location="Фивы, гробницы знати">
+                <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Coffin_of_Pa-di-mut_Boston_MFA.jpg/640px-Coffin_of_Pa-di-mut_Boston_MFA.jpg" alt="Саркофаг">
+                <div class="card-content">
+                    <div class="card-title">Антропоидный саркофаг</div>
+                    <div class="card-era"><i class="far fa-clock"></i> Поздний период</div>
+                    <div class="card-desc">Расписной деревянный гроб с иероглифами — «вместилище души».</div>
+                </div>
+            </div>
+
+            <div class="exhibit-card" data-name="Пирамидион Аменемхета III" data-era="Среднее царство, XII династия, ок. 1850 г. до н.э." data-desc="Венчающий камень Чёрной пирамиды в Дахшуре из чёрного базальта. Уникальный экземпляр с вырезанными молитвами." data-img="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Amenemhat_III_Pyramidion.jpg/640px-Amenemhat_III_Pyramidion.jpg" data-location="Дахшур, Чёрная пирамида">
+                <img class="card-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Amenemhat_III_Pyramidion.jpg/640px-Amenemhat_III_Pyramidion.jpg" alt="пирамидион">
+                <div class="card-content">
+                    <div class="card-title">Пирамидион Аменемхета III</div>
+                    <div class="card-era"><i class="far fa-clock"></i> Среднее царство, ~1850 г. до н.э.</div>
+                    <div class="card-desc">Вершина пирамиды, хранящаяся сейчас в Каирском музее.</div>
+                </div>
+            </div>
+        </div> *@
+        <div class="footer-note">
+            <i class="fas fa-vr-cardboard"></i> Все изображения и описания основаны на музейных коллекциях (Бостон, Берлин, Каир, Метрополитен). <br>
+            Виртуальный музей — некоммерческий проект, посвящённый наследию фараонов.
+        </div>
+    </div>
+
+    @* <!-- Модальное окно (детали экспоната) -->
+    <div id="exhibitModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img id="modalImg" class="modal-img" src="" alt="деталь">
+            <h3 id="modalTitle"></h3>
+            <div id="modalEra" style="color:#b16224; font-weight:500; margin-bottom: 12px;"></div>
+            <p id="modalDesc"></p>
+            <div id="modalLocation" style="margin-top: 14px; background:#efe5d5; padding:6px 12px; border-radius: 24px; font-size:0.85rem;"><i class="fas fa-digging"></i> Место находки: </div>
+        </div>
+    </div> *@
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // ИНИЦИАЛИЗАЦИЯ КАРТЫ
+        var map = L.map('egypt-map').setView([26.8206, 30.8025], 7); // центр Египта
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &carto',
+            subdomains: 'abcd',
+            maxZoom: 10,
+            minZoom: 6
+        }).addTo(map);
+
+        // Маркеры с историческими памятниками/находками экспонатов
+        const sites = [
+            { name: "Гиза / Пирамиды", coords: [29.9765, 31.1313], artifacts: "Менкаура и царица" },
+            { name: "Амарна (Тель-эль-Амарна)", coords: [27.645, 30.925], artifacts: "Бюст Нефертити" },
+            { name: "Фивы / Луксор (Долина царей)", coords: [25.740, 32.605], artifacts: "Статуя богини Сехмет" },
+            { name: "Мемфис (Мит-Рахина)", coords: [29.844, 31.254], artifacts: "Колосс Рамсеса II" },
+        ];
+
+        sites.forEach(site => {
+            let marker = L.marker(site.coords).addTo(map);
+            marker.bindPopup(`<b>${site.name}</b><br>${site.artifacts}`);
+        });
+
+        // // Модальное окно: обработка карточек
+        // const modal = document.getElementById("exhibitModal");
+        // const modalImg = document.getElementById("modalImg");
+        // const modalTitle = document.getElementById("modalTitle");
+        // const modalEra = document.getElementById("modalEra");
+        // const modalDesc = document.getElementById("modalDesc");
+        // const modalLocation = document.getElementById("modalLocation");
+        // const closeModalSpan = document.querySelector(".close-modal");
+
+        // // Функция открытия модального окна
+        // function openModal(card) {
+        //     const name = card.getAttribute("data-name");
+        //     const era = card.getAttribute("data-era");
+        //     const desc = card.getAttribute("data-desc");
+        //     const imgSrc = card.getAttribute("data-img");
+        //     const location = card.getAttribute("data-location");
+        //     modalTitle.innerText = name;
+        //     modalEra.innerText = era;
+        //     modalDesc.innerText = desc;
+        //     modalImg.src = imgSrc;
+        //     modalLocation.innerHTML = `<i class="fas fa-digging"></i> Место находки / археологический контекст: ${location}`;
+        //     modal.style.display = "flex";
+        // }
+
+        // // Навесить обработчики на все карточки
+        // const cards = document.querySelectorAll(".exhibit-card");
+        // cards.forEach(card => {
+        //     card.addEventListener("click", function(e) {
+        //         openModal(this);
+        //     });
+        // });
+
+        // // Закрытие модального окна
+        // closeModalSpan.onclick = function() {
+        //     modal.style.display = "none";
+        // };
+        // window.onclick = function(event) {
+        //     if (event.target == modal) {
+        //         modal.style.display = "none";
+        //     }
+        // };
+    </script>
+</body>
+</html>
