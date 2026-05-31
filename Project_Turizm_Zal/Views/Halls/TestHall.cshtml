@@ -1,0 +1,63 @@
+﻿<<style>
+     .svg-container {
+         max-width: 1000px;
+         margin: 0 auto;
+         position: relative;
+         width: 100%;
+     }
+
+     .main-image {
+         width: 100%;
+         display: block;
+     }
+
+     svg {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         pointer-events: none;
+     }
+
+     svg polygon {
+         pointer-events: auto;
+         fill: transparent;
+         cursor: pointer;
+     }
+
+
+     .exhibit-group {
+         transition: opacity 0.3s ease, transform 0.2s ease;
+         opacity: 0;
+         transform: scale(1);
+         transform-origin: 256px 538px; /* центр изображения */
+     }
+
+     svg polygon:hover ~ .exhibit-group {
+         opacity: 1;
+        /*   transform: scale(1.2); */  /* увеличение  */
+     }
+
+     image {
+         outline: 2px solid lime;
+     }
+
+     svg polygon {
+         fill: rgba(212, 175, 55, 0.4); /* подсветка */
+     }
+</style>
+<div class="content-container">
+
+    <div class="svg-container">
+        <img src="/images/TestHalls/TestHallEgupt.png" class="main-image" />
+        <svg viewBox="0 0 1536 1024">
+            <polygon points="185,575 318,812 141,813 141,703 176,687 182,635 188,625 214,612 218,608 218,582 204,567 199,544 196,543 194,512 198,510 190,401 205,385 242,378 282,381 314,393 335,414 298,512 301,517 300,533 290,544 285,542 275,566 275,592 288,611 318,626 321,636 321,685 345,685 345,786 317,812" onclick="location.href='/'" />
+            <g class="exhibit-group">
+                <image href="/images/TestHalls/TestHallEgupt_Exhibit1.png" x="174" y="374"  width="164" height="327" />
+            </g> 
+        </svg>
+    </div>
+
+</div>
+
