@@ -47,5 +47,12 @@ namespace Project_Turizm_Zal.Services
             }
             return task;
         }
+        public async Task<bool> AddExhibit(Exhibit exhibit, CancellationToken cancellationToken)
+        {
+            if (await _context.Exhibits.FirstOrDefaultAsync(u => u.Id == exhibit.Id) != null) return false;
+            _context.Exhibits.Add(exhibit);
+            await _context.SaveChangesAsync(cancellationToken);
+            return true;
+        }
     }
 }
