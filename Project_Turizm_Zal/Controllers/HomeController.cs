@@ -12,32 +12,30 @@ namespace Project_Turizm_Zal.Controllers
     public class HomeController : Controller
     {
         private readonly IHallService hallService;
-
-        public HomeController(IHallService hallService)
-        {
-            this.hallService = hallService;
-        private readonly ILogger<HomeController> _logger;
         private readonly UserService _userService;
 
-        public HomeController(ILogger<HomeController> logger, UserService userService)
+        public HomeController(IHallService hallService, UserService userService)
         {
-            _logger = logger;
+            this.hallService = hallService;
             _userService = userService;
         }
 
-    
+
+        public IActionResult Hall(Guid id, CancellationToken cancellationToken)
+        {
+            var hall = hallService.GetHallById(id, cancellationToken).Result;
+            return RedirectToAction("Index", "Hall", hall);
+        }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
             ViewBag.IsLoggedIn = HttpContext.Session.GetString("UserEmail") != null;
             ViewBag.UserName = HttpContext.Session.GetString("UserName") ?? "";
         }
-
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult Hall(Guid id, CancellationToken cancellationToken)
         public IActionResult About()
         {
             return View();
@@ -53,14 +51,14 @@ namespace Project_Turizm_Zal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody] LoginModel model)
+        public IActionResult Login([FromBody] LoginModel model, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
                 return Json(new { success = false, message = "Çàïîëíèòå âñå ïîëÿ" });
             }
 
-            var user = _userService.Login(model.Email, model.Password);
+            var user = _userService.Login(model.Email, model.Password, cancellationToken).Result;
             if (user == null)
             {
                 return Json(new { success = false, message = "Íåâåðíûé email èëè ïàðîëü" });
@@ -74,7 +72,7 @@ namespace Project_Turizm_Zal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register([FromBody] RegisterModel model)
+        public IActionResult Register([FromBody] RegisterModel model, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
@@ -91,14 +89,14 @@ namespace Project_Turizm_Zal.Controllers
                 return Json(new { success = false, message = "Ïàðîëü äîëæåí áûòü íå ìåíåå 6 ñèìâîëîâ" });
             }
 
-            if (_userService.IsUserExists(model.Email))
+            if (_userService.IsUserExists(model.Email, cancellationToken).Result)
             {
                 return Json(new { success = false, message = "Ïîëüçîâàòåëü ñ òàêèì email óæå ñóùåñòâóåò" });
             }
 
             var user = new User(model.Name, model.Email, model.Password);
 
-            if (!_userService.Register(user))
+            if (!_userService.Register(user, cancellationToken).Result)
             {
                 return Json(new { success = false, message = "Îøèáêà ïðè ðåãèñòðàöèè" });
             }
@@ -127,8 +125,8 @@ namespace Project_Turizm_Zal.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            var hall = hallService.GetHallById(id, cancellationToken).Result;
-            return RedirectToAction("Index", "Hall", hall);
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

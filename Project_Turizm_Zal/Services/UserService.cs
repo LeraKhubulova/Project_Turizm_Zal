@@ -1,59 +1,38 @@
 ﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Project_Turizm_Zal.Data;
 using Project_Turizm_Zal.Models;
 
 namespace Project_Turizm_Zal.Services
 {
     public class UserService
     {
-        private readonly string _usersFilePath;
-        private List<User> _users = new List<User>();  
+        private readonly MuseumContext _context;
 
-        public UserService(IWebHostEnvironment env)
+        public UserService(MuseumContext context)
         {
-            _usersFilePath = Path.Combine(env.ContentRootPath, "Data", "users.json");
-            LoadUsers();
+            _context = context;
         }
 
-        private void LoadUsers()
+        public async Task<bool> Register(User user, CancellationToken cancellationToken)
         {
-            if (!File.Exists(_usersFilePath))
-            {
-                _users = new List<User>();
-                SaveUsers();
-                return;
-            }
-
-            var json = File.ReadAllText(_usersFilePath);
-            _users = JsonSerializer.Deserialize<List<User>>(json) ?? new List<User>();
-        }
-
-        private void SaveUsers()
-        {
-            var json = JsonSerializer.Serialize(_users, new JsonSerializerOptions { WriteIndented = true });
-            var directory = Path.GetDirectoryName(_usersFilePath);
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-            File.WriteAllText(_usersFilePath, json);
-        }
-
-        public bool Register(User user)
-        {
-            if (_users.Any(u => u.Email == user.Email))
-                return false;
-
-            _users.Add(user);
-            SaveUsers();
+            if ( await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id, cancellationToken) != null) return false;
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
 
-        public User Login(string email, string password)
+        public async Task<User> Login(string email, string password, CancellationToken cancellationToken)
         {
-            return _users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password, cancellationToken);
+            if (user == null) throw new Exception("Wrong email or password");
+            return user;
         }
 
-        public bool IsUserExists(string email)
+        public async Task<bool> IsUserExists(string email, CancellationToken cancellationToken)
         {
-            return _users.Any(u => u.Email == email);
+            var result = await _context.Users.AnyAsync(u => u.Email == email, cancellationToken);
+            return result;
         }
     }
 }
