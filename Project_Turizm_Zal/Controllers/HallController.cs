@@ -18,14 +18,14 @@ namespace Project_Turizm_Zal.Controllers
             return View(hall);
         }
 
-        public IActionResult Exhibition(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Exhibition(Guid id, CancellationToken cancellationToken)
         {
-            var exhibition = hallService.GetExhibitionById(id, cancellationToken).Result;
+            var exhibition = await hallService.GetExhibitionById(id, cancellationToken);
             return View(exhibition);
         }
 
-        public IActionResult Exhibit(Guid id, CancellationToken cancellationToken) {
-            var exhibit = hallService.GetExhibitById(id, cancellationToken).Result;
+        public async Task<IActionResult> Exhibit(Guid id, CancellationToken cancellationToken) {
+            var exhibit = await hallService.GetExhibitById(id, cancellationToken);
             var viewModel = new ExhibitViewModel()
             {
                 Id = exhibit.Id,
@@ -34,7 +34,7 @@ namespace Project_Turizm_Zal.Controllers
                 Description = exhibit.Description,
                 ExhibitionName = exhibit.Exhibition.Name
             };
-            return View(exhibit);
+            return View(viewModel);
         }
 
     }

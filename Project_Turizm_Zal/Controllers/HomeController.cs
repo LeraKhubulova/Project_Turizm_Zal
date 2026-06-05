@@ -22,9 +22,9 @@ namespace Project_Turizm_Zal.Controllers
         }
 
 
-        public IActionResult Hall(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Hall(Guid id, CancellationToken cancellationToken)
         {
-            var hall = hallService.GetHallById(id, cancellationToken).Result;
+            var hall = await hallService.GetHallById(id, cancellationToken);
             return RedirectToAction("Index", "Hall", hall);
         }
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -52,7 +52,7 @@ namespace Project_Turizm_Zal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login(LoginModel model, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
@@ -60,7 +60,7 @@ namespace Project_Turizm_Zal.Controllers
                 return View("Auth", model);
             }
 
-            var user = _userService.Login(model.Email, model.Password, cancellationToken).Result;
+            var user = await _userService.Login(model.Email, model.Password, cancellationToken);
 
             if (user == null)
             {
@@ -82,7 +82,7 @@ namespace Project_Turizm_Zal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register([FromBody] RegisterModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Register([FromBody] RegisterModel model, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
@@ -99,14 +99,14 @@ namespace Project_Turizm_Zal.Controllers
                 return Json(new { success = false, message = "Ïàðîëü äîëæåí áûòü íå ìåíåå 6 ñèìâîëîâ" });
             }
 
-            if (_userService.IsUserExists(model.Email, cancellationToken).Result)
+            if (await _userService.IsUserExists(model.Email, cancellationToken))
             {
                 return Json(new { success = false, message = "Ïîëüçîâàòåëü ñ òàêèì email óæå ñóùåñòâóåò" });
             }
 
             var user = new User(model.Name, model.Email, model.Password);
 
-            if (!_userService.Register(user, cancellationToken).Result)
+            if (!(await _userService.Register(user, cancellationToken)))
             {
                 return Json(new { success = false, message = "Îøèáêà ïðè ðåãèñòðàöèè" });
             }
