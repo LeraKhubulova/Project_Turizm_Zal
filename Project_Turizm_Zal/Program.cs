@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Project_Turizm_Zal.Data;
 using Project_Turizm_Zal.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,8 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IHallService, HallService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddDbContext<MuseumContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddSession();
-builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 

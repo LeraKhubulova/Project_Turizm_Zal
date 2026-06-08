@@ -1,31 +1,38 @@
 using System.Diagnostics;
+using System.Threading;
 using Microsoft.AspNetCore.Mvc;
+using Project_Turizm_Zal.Data;
 using Microsoft.AspNetCore.Mvc.Filters;  
 using Microsoft.AspNetCore.Http;
 using Project_Turizm_Zal.Models;
 using Project_Turizm_Zal.Services;
+using static Project_Turizm_Zal.Models.User;
 
 namespace Project_Turizm_Zal.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly UserService _userService;
+        private readonly IHallService hallService;
+        private readonly IUserService _userService;
 
-        public HomeController(ILogger<HomeController> logger, UserService userService)
+        public HomeController(IHallService hallService, IUserService userService)
         {
-            _logger = logger;
+            this.hallService = hallService;
             _userService = userService;
         }
 
-    
+
+        public async Task<IActionResult> Hall(Guid id, CancellationToken cancellationToken)
+        {
+            var hall = await hallService.GetHallById(id, cancellationToken);
+            return RedirectToAction("Index", "Hall", hall);
+        }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
             ViewBag.IsLoggedIn = HttpContext.Session.GetString("UserEmail") != null;
             ViewBag.UserName = HttpContext.Session.GetString("UserName") ?? "";
         }
-
         public IActionResult Index()
         {
             return View();
@@ -45,54 +52,63 @@ namespace Project_Turizm_Zal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login(LoginModel model, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
-                return Json(new { success = false, message = "Заполните все поля" });
+                ViewBag.Error = "Р—Р°РїРѕР»РЅРёС‚Рµ РІСЃРµ РїРѕР»СЏ";
+                return View("Auth", model);
             }
 
-            var user = _userService.Login(model.Email, model.Password);
+            var user = await _userService.Login(model.Email, model.Password, cancellationToken);
+
             if (user == null)
             {
-                return Json(new { success = false, message = "Неверный email или пароль" });
+                ViewBag.Error = "РќРµРІРµСЂРЅС‹Р№ email РёР»Рё РїР°СЂРѕР»СЊ";
+                return View("Auth", model);
             }
 
             HttpContext.Session.SetString("UserEmail", user.Email);
             HttpContext.Session.SetString("UserName", user.Name);
             HttpContext.Session.SetString("UserId", user.Id.ToString());
 
-            return Json(new { success = true, userName = user.Name });
+            if (user.Role == UserRole.Admin)
+            {
+                HttpContext.Session.SetString("UserRole", "Admin");
+                return RedirectToAction("Index", "Admin");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
-        public IActionResult Register([FromBody] RegisterModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterModel model, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
-                return Json(new { success = false, message = "Заполните все поля" });
+                return Json(new { success = false, message = "Г‡Г ГЇГ®Г«Г­ГЁГІГҐ ГўГ±ГҐ ГЇГ®Г«Гї" });
             }
 
             if (model.Password != model.ConfirmPassword)
             {
-                return Json(new { success = false, message = "Пароли не совпадают" });
+                return Json(new { success = false, message = "ГЏГ Г°Г®Г«ГЁ Г­ГҐ Г±Г®ГўГЇГ Г¤Г ГѕГІ" });
             }
 
-            if (model.Password.Length < 6)
+            if (model.Password.Length < 4)
             {
-                return Json(new { success = false, message = "Пароль должен быть не менее 6 символов" });
+                return Json(new { success = false, message = "ГЏГ Г°Г®Г«Гј Г¤Г®Г«Г¦ГҐГ­ ГЎГ»ГІГј Г­ГҐ Г¬ГҐГ­ГҐГҐ 6 Г±ГЁГ¬ГўГ®Г«Г®Гў" });
             }
 
-            if (_userService.IsUserExists(model.Email))
+            if (await _userService.IsUserExists(model.Email, cancellationToken))
             {
-                return Json(new { success = false, message = "Пользователь с таким email уже существует" });
+                return Json(new { success = false, message = "ГЏГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гј Г± ГІГ ГЄГЁГ¬ email ГіГ¦ГҐ Г±ГіГ№ГҐГ±ГІГўГіГҐГІ" });
             }
 
             var user = new User(model.Name, model.Email, model.Password);
 
-            if (!_userService.Register(user))
+            if (!(await _userService.Register(user, cancellationToken)))
             {
-                return Json(new { success = false, message = "Ошибка при регистрации" });
+                return Json(new { success = false, message = "ГЋГёГЁГЎГЄГ  ГЇГ°ГЁ Г°ГҐГЈГЁГ±ГІГ°Г Г¶ГЁГЁ" });
             }
 
             return Json(new { success = true });
@@ -121,5 +137,6 @@ namespace Project_Turizm_Zal.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }
