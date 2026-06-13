@@ -1,5 +1,224 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Project_Turizm_Zal.Models.MuseumHall
+
 @{
+    ViewData["Title"] = Model.Name;
 }
+
+<style>
+    body {
+        background-color: #f5f5f5;
+        color: #1f1f1f;
+    }
+
+    .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 5%;
+    }
+
+    .hall-detail {
+        background: white;
+        border-radius: 2px;
+        padding: 2rem;
+        margin: 2rem 0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+
+    .hall-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #1f1f1f;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
+        border-left: 4px solid #d4af37;
+        padding-left: 20px;
+    }
+
+    .hall-slogan {
+        font-size: 1.1rem;
+        color: #555;
+        border-left: 3px solid #d4af37;
+        padding-left: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .description-wrapper h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 1rem 0;
+        color: #1f1f1f;
+        border-left: 4px solid #d4af37;
+        padding-left: 20px;
+    }
+
+    .description-text p {
+        line-height: 1.6;
+        color: #444;
+        margin-bottom: 1rem;
+        padding-left: 24px;
+    }
+
+ 
+    .hall-img {
+        width: 100%;
+        height: auto;
+        border-radius: 2px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .two-columns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+
+    .col-description {
+        flex: 1.2;
+    }
+
+    .col-map {
+        flex: 1;
+        min-height: 400px;
+    }
+
+    .map-container-leaflet {
+        background: #f0f0f0;
+        border-radius: 2px;
+        overflow: hidden;
+        height: 100%;
+        min-height: 400px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    #hallMap {
+        width: 100%;
+        height: 400px;
+        background: #e8e8e8;
+    }
+
+    .exhibits-title {
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin: 2rem 0 1.5rem;
+        color: #1f1f1f;
+        border-left: 4px solid #d4af37;
+        padding-left: 20px;
+    }
+
+    /* Карточки  */
+    .exhibit-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .exhibit-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+        cursor: pointer;
+        height: 100%;
+    }
+
+        .exhibit-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.17);
+        }
+
+    .exhibit-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .exhibit-body {
+        padding: 20px;
+    }
+
+    .exhibit-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #1f1f1f;
+    }
+
+    .exhibit-desc {
+        color: #666;
+        margin-bottom: 15px;
+        line-height: 1.4;
+    }
+
+</style>
+
+<div class="content-container">
+    <div class="hall-detail">
+      
+        <h1 class="hall-title">@Model.Name</h1>
+
+        <div class="hall-slogan">@Model.Slogan</div>
+
+        <img src="@Model.ImagePath" alt="@Model.Name" class="hall-img" />
+
+        <div class="two-columns">
+            <div class="col-description">
+            
+                <div class="description-wrapper">
+                    <h3>Описание зала</h3>
+                    <div class="description-text">
+                        <p>@Model.Description</p>
+                        @if (!string.IsNullOrEmpty(Model.LeftColumnText))
+                        {
+                            <p>@Model.LeftColumnText</p>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-map">
+                @if (!string.IsNullOrEmpty(Model.MapData))
+                {
+                    <div class="map-container-leaflet">
+                        <div id="hallMap"></div>
+                    </div>
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                    <script>
+                        var mapData = @Html.Raw(Model.MapData);
+                        var map = L.map('hallMap').setView([mapData.centerLat, mapData.centerLng], mapData.zoom);
+                        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+                        }).addTo(map);
+                        mapData.markers.forEach(m => {
+                            L.marker([m.lat, m.lng]).addTo(map).bindPopup(m.popup);
+                        });
+                    </script>
+                }
+                else
+                {
+                    <div class="map-container-leaflet" style="display: flex; align-items: center; justify-content: center;">
+                        <p style="color: #999;">Интерактивная карта отсутствует</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+        <h3 class="exhibits-title">Экспонаты</h3>
+        <div class="exhibit-grid">
+            @foreach (var exhibit in Model.Exhibits)
+            {
+                <div class="exhibit-card" onclick="location.href='/Exhibits/Details/@exhibit.Id'">
+                    <img src="@exhibit.Images?.FirstOrDefault() ?? " /images/placeholder.jpg"" class="exhibit-img" />
+                    <div class="exhibit-body">
+                        <div class="exhibit-name">@exhibit.Name</div>
+                        <div class="exhibit-desc">@exhibit.Description</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

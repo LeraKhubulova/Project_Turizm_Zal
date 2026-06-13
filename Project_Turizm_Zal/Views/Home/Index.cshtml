@@ -2,6 +2,8 @@
     ViewData["Title"] = "Главная";
 }
 
+@model IEnumerable<MuseumHall>
+
 <div class="content-container">
     <div class="full-width-carousel carousel-gradient-overlay">
         <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -51,36 +53,19 @@
 
     <h2 class="text-center mb-4">Наши залы</h2>
     <div class="row g-4 mb-5">
-        <div class="col-md-4">
-            <div class="hall-card">
-                <img src="/images/index/prob.jpg" class="hall-img" alt="Зал 1">
-                <div class="hall-card-body">
-                    <h3>Зал Древнего Египта</h3>
-                    <p>Погрузитесь в тайны.</p>
-                    <a href="#" class="btn-custom">Узнать подробнее</a>
+        @foreach (var hall in Model)
+        {
+            <div class="col-md-4">
+                <div class="hall-card">
+                    <img src="@hall.ImagePath" class="hall-img" alt="@hall.Name">
+                    <div class="hall-card-body">
+                        <h3>@hall.Name</h3>
+                        <p>@hall.Description</p>
+                        <a asp-controller="Halls" asp-action="Details" asp-route-id="@hall.Id" class="btn-custom">Узнать подробнее</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="hall-card">
-                <img src="/images/index/prob.jpg" class="hall-img" alt="Зал 2">
-                <div class="hall-card-body">
-                    <h3>Зал Картин</h3>
-                    <p>Шедевры живописи разных эпох.</p>
-                    <a href="#" class="btn-custom">Узнать подробнее</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="hall-card">
-                <img src="/images/index/prob.jpg" class="hall-img" alt="Зал 3">
-                <div class="hall-card-body">
-                    <h3>Зал Истории</h3>
-                    <p>Важнейшие события и артефакты.</p>
-                    <a href="#" class="btn-custom">Узнать подробнее</a>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 
     <div class="stats-section row text-center mb-5 py-4 mx-0">

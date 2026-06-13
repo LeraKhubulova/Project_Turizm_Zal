@@ -20,7 +20,7 @@ main {
 	flex: 1;
 }
 
-/*------------------- шапка (светлая) ------------------*/
+/*------------------- шапка ------------------*/
 .light-nav {
 	background-color: #ffffff;
 	padding: 16px 0;
@@ -272,7 +272,7 @@ main {
 	opacity: 0.5;
 }
 
-/*------------------- главная (контент) ------------------*/
+/*------------------- главная ------------------*/
 .content-container {
 	max-width: 1200px;
 	margin: 0 auto;
@@ -290,13 +290,13 @@ main {
 	background: white;
 	border-radius: 15px;
 	overflow: hidden;
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 	transition: box-shadow 0.3s ease;
 	height: 100%;
 }
 
 .hall-card:hover {
-	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.45);
+	box-shadow: 0 10px 15px rgba(0, 0, 0, 0.17);
 }
 
 .hall-img {

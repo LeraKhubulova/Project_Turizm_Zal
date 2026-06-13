@@ -10,13 +10,11 @@
         public string ImagePath { get; set; }
         public string Slogan { get; set; }
         public string LeftColumnText { get; set; }
-        public string MapImagePath { get; set; }
+        public string MapData { get; set; }
 
 
 
-
-
-
-        public List<Exhibition> Exhibitions { get; set; }
+        //public List<Exhibition> Exhibitions { get; set; }
+        public List<Exhibit> Exhibits { get; set; }
     }
 }

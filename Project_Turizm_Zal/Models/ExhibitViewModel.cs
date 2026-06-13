@@ -10,6 +10,6 @@
 
             public string Description { get; set; } = string.Empty;
 
-            public string ExhibitionName { get; set; } = string.Empty;
+            //public string ExhibitionName { get; set; } = string.Empty;
     }
 }

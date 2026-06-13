@@ -11,7 +11,7 @@ using Project_Turizm_Zal.Data;
 namespace Project_Turizm_Zal.Migrations
 {
     [DbContext(typeof(MuseumContext))]
-    [Migration("20260601120854_InitialCreate")]
+    [Migration("20260613201016_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -30,50 +30,22 @@ namespace Project_Turizm_Zal.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ExhibitionId")
-                        .HasColumnType("TEXT");
-
                     b.PrimitiveCollection<string>("Images")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("MuseumHallId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExhibitionId");
+                    b.HasIndex("MuseumHallId");
 
                     b.ToTable("Exhibits");
-                });
-
-            modelBuilder.Entity("Project_Turizm_Zal.Models.Exhibition", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("HallId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HallId");
-
-                    b.ToTable("Exhibitions");
                 });
 
             modelBuilder.Entity("Project_Turizm_Zal.Models.MuseumHall", b =>
@@ -86,12 +58,28 @@ namespace Project_Turizm_Zal.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LeftColumnText")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MapData")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Number")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Slogan")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -119,6 +107,9 @@ namespace Project_Turizm_Zal.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -126,29 +117,18 @@ namespace Project_Turizm_Zal.Migrations
 
             modelBuilder.Entity("Project_Turizm_Zal.Models.Exhibit", b =>
                 {
-                    b.HasOne("Project_Turizm_Zal.Models.Exhibition", "Exhibition")
-                        .WithMany()
-                        .HasForeignKey("ExhibitionId")
+                    b.HasOne("Project_Turizm_Zal.Models.MuseumHall", "MuseumHall")
+                        .WithMany("Exhibits")
+                        .HasForeignKey("MuseumHallId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Exhibition");
-                });
-
-            modelBuilder.Entity("Project_Turizm_Zal.Models.Exhibition", b =>
-                {
-                    b.HasOne("Project_Turizm_Zal.Models.MuseumHall", "Hall")
-                        .WithMany("Exhibitions")
-                        .HasForeignKey("HallId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Hall");
+                    b.Navigation("MuseumHall");
                 });
 
             modelBuilder.Entity("Project_Turizm_Zal.Models.MuseumHall", b =>
                 {
-                    b.Navigation("Exhibitions");
+                    b.Navigation("Exhibits");
                 });
 #pragma warning restore 612, 618
         }

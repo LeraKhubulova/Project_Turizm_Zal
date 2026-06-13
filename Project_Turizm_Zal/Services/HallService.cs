@@ -25,17 +25,17 @@ namespace Project_Turizm_Zal.Services
             return task;
         }
 
-        public async Task<Exhibition> GetExhibitionById(Guid id, CancellationToken cancellationToken)
-        {
-            var task = await _context.Exhibitions
-                .AsNoTracking()
-                .FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
-            if (task == null)
-            {
-                throw new NullReferenceException("Wrong exhibition id");
-            }
-            return task;
-        }
+        //public async Task<Exhibition> GetExhibitionById(Guid id, CancellationToken cancellationToken)
+        //{
+        //    var task = await _context.Exhibitions
+        //        .AsNoTracking()
+        //        .FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
+        //    if (task == null)
+        //    {
+        //        throw new NullReferenceException("Wrong exhibition id");
+        //    }
+        //    return task;
+        //}
         public async Task<Exhibit> GetExhibitById(Guid id, CancellationToken cancellationToken)
         {
             var task = await _context.Exhibits
