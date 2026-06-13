@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project_Turizm_Zal.Data;
 using Microsoft.AspNetCore.Mvc.Filters;  
 using Microsoft.AspNetCore.Http;
+using Project_Turizm_Zal.Data;
 using Project_Turizm_Zal.Models;
 using Project_Turizm_Zal.Services;
 using static Project_Turizm_Zal.Models.User;
@@ -19,6 +20,7 @@ namespace Project_Turizm_Zal.Controllers
         {
             this.hallService = hallService;
             _userService = userService;
+            this.hallService = hallService;
         }
 
 

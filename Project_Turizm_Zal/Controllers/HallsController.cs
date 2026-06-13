@@ -26,6 +26,8 @@ namespace Project_Turizm_Zal.Controllers
                     Number = 1,
                     Description = "Зал древнеегипетских экспонатов",
                     ImagePath = "/images/TestHalls/TestHallEgupt.png"
+
+
                 };
                 _context.Halls.Add(hall);
                 await _context.SaveChangesAsync();
