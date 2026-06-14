@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
-using Project_Turizm_Zal.Data;
-using Microsoft.AspNetCore.Mvc.Filters;  
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Project_Turizm_Zal.Data;
 using Project_Turizm_Zal.Models;
 using Project_Turizm_Zal.Services;
 using static Project_Turizm_Zal.Models.User;
@@ -12,31 +13,36 @@ namespace Project_Turizm_Zal.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IHallService hallService;
+        private readonly MuseumContext _context;
+        private readonly IHallService _hallService;
         private readonly IUserService _userService;
 
-        public HomeController(IHallService hallService, IUserService userService)
+        public HomeController(MuseumContext context, IHallService hallService, IUserService userService)
         {
-            this.hallService = hallService;
+            _context = context;
+            _hallService = hallService;
             _userService = userService;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var halls = await _context.Halls.ToListAsync();
+            return View(halls);
+        }
 
         public async Task<IActionResult> Hall(Guid id, CancellationToken cancellationToken)
         {
-            var hall = await hallService.GetHallById(id, cancellationToken);
+            var hall = await _hallService.GetHallById(id, cancellationToken);
             return RedirectToAction("Index", "Hall", hall);
         }
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
             ViewBag.IsLoggedIn = HttpContext.Session.GetString("UserEmail") != null;
             ViewBag.UserName = HttpContext.Session.GetString("UserName") ?? "";
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+
         public IActionResult About()
         {
             return View();
@@ -86,29 +92,29 @@ namespace Project_Turizm_Zal.Controllers
         {
             if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
-                return Json(new { success = false, message = "Çàïîëíèòå âñå ïîëÿ" });
+                return Json(new { success = false, message = "Заполните все поля" });
             }
 
             if (model.Password != model.ConfirmPassword)
             {
-                return Json(new { success = false, message = "Ïàðîëè íå ñîâïàäàþò" });
+                return Json(new { success = false, message = "Пароли не совпадают" });
             }
 
-            if (model.Password.Length < 4)
+            if (model.Password.Length < 6)
             {
-                return Json(new { success = false, message = "Ïàðîëü äîëæåí áûòü íå ìåíåå 6 ñèìâîëîâ" });
+                return Json(new { success = false, message = "Пароль должен быть не менее 6 символов" });
             }
 
             if (await _userService.IsUserExists(model.Email, cancellationToken))
             {
-                return Json(new { success = false, message = "Ïîëüçîâàòåëü ñ òàêèì email óæå ñóùåñòâóåò" });
+                return Json(new { success = false, message = "Пользователь с таким email уже существует" });
             }
 
             var user = new User(model.Name, model.Email, model.Password);
 
             if (!(await _userService.Register(user, cancellationToken)))
             {
-                return Json(new { success = false, message = "Îøèáêà ïðè ðåãèñòðàöèè" });
+                return Json(new { success = false, message = "Ошибка при регистрации" });
             }
 
             return Json(new { success = true });
@@ -137,6 +143,5 @@ namespace Project_Turizm_Zal.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
     }
 }
