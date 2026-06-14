@@ -6,24 +6,25 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Http;
 using Project_Turizm_Zal.Models;
 using Project_Turizm_Zal.Services;
+using static Project_Turizm_Zal.Models.User;
 
 namespace Project_Turizm_Zal.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IHallService hallService;
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public HomeController(IHallService hallService, UserService userService)
+        public HomeController(IHallService hallService, IUserService userService)
         {
             this.hallService = hallService;
             _userService = userService;
         }
 
 
-        public IActionResult Hall(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Hall(Guid id, CancellationToken cancellationToken)
         {
-            var hall = hallService.GetHallById(id, cancellationToken).Result;
+            var hall = await hallService.GetHallById(id, cancellationToken);
             return RedirectToAction("Index", "Hall", hall);
         }
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -51,28 +52,37 @@ namespace Project_Turizm_Zal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody] LoginModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login(LoginModel model, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
-                return Json(new { success = false, message = "Çàïîëíèòå âñå ïîëÿ" });
+                ViewBag.Error = "Заполните все поля";
+                return View("Auth", model);
             }
 
-            var user = _userService.Login(model.Email, model.Password, cancellationToken).Result;
+            var user = await _userService.Login(model.Email, model.Password, cancellationToken);
+
             if (user == null)
             {
-                return Json(new { success = false, message = "Íåâåðíûé email èëè ïàðîëü" });
+                ViewBag.Error = "Неверный email или пароль";
+                return View("Auth", model);
             }
 
             HttpContext.Session.SetString("UserEmail", user.Email);
             HttpContext.Session.SetString("UserName", user.Name);
             HttpContext.Session.SetString("UserId", user.Id.ToString());
 
-            return Json(new { success = true, userName = user.Name });
+            if (user.Role == UserRole.Admin)
+            {
+                HttpContext.Session.SetString("UserRole", "Admin");
+                return RedirectToAction("Index", "Admin");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
-        public IActionResult Register([FromBody] RegisterModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Register([FromBody] RegisterModel model, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(model.Name) || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
@@ -84,19 +94,19 @@ namespace Project_Turizm_Zal.Controllers
                 return Json(new { success = false, message = "Ïàðîëè íå ñîâïàäàþò" });
             }
 
-            if (model.Password.Length < 6)
+            if (model.Password.Length < 4)
             {
                 return Json(new { success = false, message = "Ïàðîëü äîëæåí áûòü íå ìåíåå 6 ñèìâîëîâ" });
             }
 
-            if (_userService.IsUserExists(model.Email, cancellationToken).Result)
+            if (await _userService.IsUserExists(model.Email, cancellationToken))
             {
                 return Json(new { success = false, message = "Ïîëüçîâàòåëü ñ òàêèì email óæå ñóùåñòâóåò" });
             }
 
             var user = new User(model.Name, model.Email, model.Password);
 
-            if (!_userService.Register(user, cancellationToken).Result)
+            if (!(await _userService.Register(user, cancellationToken)))
             {
                 return Json(new { success = false, message = "Îøèáêà ïðè ðåãèñòðàöèè" });
             }
