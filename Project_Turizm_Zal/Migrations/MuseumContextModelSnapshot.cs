@@ -23,12 +23,27 @@ namespace Project_Turizm_Zal.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CultureEra")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Dimensions")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FindLocation")
+                        .HasColumnType("TEXT");
+
                     b.PrimitiveCollection<string>("Images")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Materials")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Model3DUrl")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("MuseumHallId")
@@ -36,6 +51,22 @@ namespace Project_Turizm_Zal.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Quantity")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Storage")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Technique")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Weight")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
