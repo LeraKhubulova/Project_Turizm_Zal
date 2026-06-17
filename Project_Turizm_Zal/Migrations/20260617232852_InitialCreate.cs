@@ -53,7 +53,17 @@ namespace Project_Turizm_Zal.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Images = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    MuseumHallId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    ShortDescription = table.Column<string>(type: "TEXT", nullable: false),
+                    MuseumHallId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CultureEra = table.Column<string>(type: "TEXT", nullable: true),
+                    FindLocation = table.Column<string>(type: "TEXT", nullable: true),
+                    Materials = table.Column<string>(type: "TEXT", nullable: true),
+                    Technique = table.Column<string>(type: "TEXT", nullable: true),
+                    Dimensions = table.Column<string>(type: "TEXT", nullable: true),
+                    Weight = table.Column<string>(type: "TEXT", nullable: true),
+                    Quantity = table.Column<string>(type: "TEXT", nullable: true),
+                    Storage = table.Column<string>(type: "TEXT", nullable: true),
+                    Model3DUrl = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
