@@ -1,0 +1,195 @@
+﻿@{
+    ViewData["Title"] = "О нас";
+}
+
+<style>
+    .team-page {
+        background: white;
+        border-radius: 2px;
+        padding: 2rem;
+        margin: 2rem 0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .team-page h2 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #1f1f1f;
+        border-left: 4px solid #d4af37;
+        padding-left: 20px;
+        margin-bottom: 1.5rem;
+    }
+
+    .team-intro {
+        font-size: 1.1rem;
+        color: #555;
+        padding-left: 24px;
+        max-width: 800px;
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
+    }
+
+    .founder-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        align-items: flex-start;
+        background: #f9f9f9;
+        border-radius: 2px; 
+        padding: 2rem;
+        margin-bottom: 3rem;
+        border: 1px solid #e8e8e8;
+    }
+
+    .founder-avatar {
+        flex-shrink: 0;
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .founder-info {
+        flex: 1;
+    }
+
+    .founder-info h3 {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #1f1f1f;
+        margin-bottom: 0.2rem;
+    }
+
+    .founder-role {
+        font-size: 1rem;
+        color: #d4af37;
+        font-weight: 500;
+        margin-bottom: 0.8rem;
+        display: block;
+    }
+
+    .founder-text {
+        color: #444;
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+
+    .founder-text strong {
+        color: #1f1f1f;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
+
+    .team-card {
+        background: #f9f9f9;
+        border-radius: 2px; 
+        padding: 1.5rem 1rem;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e8e8e8;
+    }
+
+    .team-card img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+            
+    }
+
+    .team-card h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1f1f1f;
+        margin-bottom: 0.2rem;
+    }
+
+    .team-card .role {
+        color: #d4af37;
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .team-card p {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 0.5rem;
+    }
+
+    .team-card .vibe {
+        font-style: italic;
+        color: #b8860b;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    .footer-note {
+        margin-top: 3rem;
+        border-top: 1px solid #e0e0e0;
+        padding-top: 2rem;
+        text-align: center;
+        color: #999;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="content-container">
+    <div class="team-page">
+        <h2>Наша команда</h2>
+        <p class="team-intro">
+            Мы — небольшая, но дружная команда, которая создала этот виртуальный музей с нуля.
+            Каждый из нас вложил частичку души в проект, чтобы вы могли прикоснуться к истории и культуре.
+        </p>
+
+  
+        <div class="founder-section">
+            <img src="/images/team/nn.png" alt="Арина Цагараева" class="founder-avatar" >
+            <div class="founder-info">
+                <h3>Арина Цагараева</h3>
+                <span class="founder-role">Основатель, фронтенд-разработчик</span>
+                <p class="founder-text">
+                    <strong>Мы искренне любим историю и хотим дарить людям эмоции и знания.</strong><br>
+                    Наша задача — не просто показать экспонаты, а создать пространство, где каждый
+                    почувствует связь с прошлым. Я всегда открыта к диалогу: если у вас есть идеи,
+                    вопросы или пожелания — смело обращайтесь!
+                </p>
+                <p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;">
+                    arina@museum.ru
+                </p>
+            </div>
+        </div>
+
+        
+        <h3 style="font-size: 1.5rem; font-weight: 600; border-left: 4px solid #d4af37; padding-left: 20px; margin: 2rem 0 1rem;">
+            Участники команды
+        </h3>
+
+        <div class="team-grid">
+      
+            <div class="team-card">
+                <img src="/images/team/nn.png" alt="Антон Тараскин">
+                <h3>Антон Тараскин</h3>
+                <p class="role">Бэкенд-разработчик</p>
+                <p>Спроектировал базу данных, настроил серверную логику и связь с БД. Всё, что работает «под капотом» — его рук дело.</p>
+            </div>
+
+           
+            <div class="team-card">
+                <img src="/images/team/lera.jpg" alt="Лера Хубулова" >
+                <h3>Лера Хубулова</h3>
+                <p class="role">Для вайбика</p>
+                <div class="vibe">“Вайбик — это когда душа радуется”</div>
+            </div>
+        </div>
+
+      
+    </div>
+</div>

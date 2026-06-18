@@ -40,6 +40,11 @@ namespace Project_Turizm_Zal.Controllers
             return View();
         }
 
+        public IActionResult AboutTeam()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
