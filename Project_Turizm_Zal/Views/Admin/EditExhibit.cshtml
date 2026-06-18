@@ -1,0 +1,148 @@
+﻿@model Project_Turizm_Zal.Models.ViewModels.EditExhibitViewModel
+
+@{
+    ViewData["Title"] = "Редактирование экспоната";
+}
+
+<div class="container py-5">
+    <h1 class="mb-4">Редактирование экспоната</h1>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+
+    <form asp-controller="Admin"
+          asp-action="EditExhibit"
+          method="post"
+          enctype="multipart/form-data">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ExistingImagePath" />
+
+        <div class="mb-3">
+            <label asp-for="MuseumHallId" class="form-label">Зал</label>
+            <select asp-for="MuseumHallId" class="form-select" required>
+                <option value="">Выберите зал</option>
+
+                @foreach (var hall in Model.Halls)
+                {
+                    <option value="@hall.Id">
+                        @hall.Number. @hall.Name
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Название экспоната</label>
+            <input asp-for="Name" class="form-control" required />
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ExistingImagePath))
+        {
+            <div class="mb-3">
+                <label class="form-label">Текущее изображение</label>
+
+                <div>
+                    <img src="@Model.ExistingImagePath"
+                         alt="@Model.Name"
+                         style="width: 180px; height: 130px; object-fit: cover; border-radius: 8px;" />
+                </div>
+            </div>
+        }
+
+        <div class="mb-3">
+            <label asp-for="ImageFile" class="form-label">Новое изображение</label>
+            <input asp-for="ImageFile"
+                   type="file"
+                   class="form-control"
+                   accept=".jpg,.jpeg,.png,.webp" />
+            <div class="form-text">
+                Оставьте поле пустым, если не хотите менять изображение.
+                Допустимые форматы: jpg, jpeg, png, webp. Максимальный размер — 5 МБ.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ShortDescription" class="form-label">Краткое описание</label>
+            <textarea asp-for="ShortDescription"
+                      class="form-control"
+                      rows="3"
+                      required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Полное описание</label>
+            <textarea asp-for="Description"
+                      class="form-control"
+                      rows="6"
+                      required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CultureEra" class="form-label">Культура / эпоха</label>
+            <input asp-for="CultureEra" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FindLocation" class="form-label">Место находки</label>
+            <input asp-for="FindLocation" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Materials" class="form-label">Материалы</label>
+            <input asp-for="Materials" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Technique" class="form-label">Техника изготовления</label>
+            <input asp-for="Technique" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Dimensions" class="form-label">Размеры</label>
+            <input asp-for="Dimensions" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Weight" class="form-label">Вес</label>
+            <input asp-for="Weight" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Quantity" class="form-label">Количество</label>
+            <input asp-for="Quantity" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Storage" class="form-label">Место хранения</label>
+            <input asp-for="Storage" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Model3DUrl" class="form-label">Ссылка на 3D-модель</label>
+            <input asp-for="Model3DUrl"
+                   class="form-control"
+                   placeholder="https://..." />
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit"
+                    class="btn"
+                    style="background-color: #8b7355; border-color: #8b7355; color: white;">
+                Сохранить изменения
+            </button>
+
+            <a asp-controller="Admin"
+               asp-action="Exhibits"
+               class="btn btn-secondary">
+                Назад
+            </a>
+        </div>
+    </form>
+</div>

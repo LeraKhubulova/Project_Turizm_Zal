@@ -109,6 +109,55 @@ namespace Project_Turizm_Zal.Services
 
             return true;
         }
+        public async Task<bool> UpdateExhibit(Exhibit exhibit, CancellationToken cancellationToken)
+        {
+            var existingExhibit = await _context.Exhibits
+                .FirstOrDefaultAsync(e => e.Id == exhibit.Id, cancellationToken);
+
+            if (existingExhibit == null)
+            {
+                return false;
+            }
+
+            var hallExists = await _context.Halls
+                .AnyAsync(h => h.Id == exhibit.MuseumHallId, cancellationToken);
+
+            if (!hallExists)
+            {
+                return false;
+            }
+
+            var duplicateExists = await _context.Exhibits
+                .AnyAsync(e =>
+                    e.Id != exhibit.Id &&
+                    e.Name == exhibit.Name &&
+                    e.MuseumHallId == exhibit.MuseumHallId,
+                    cancellationToken);
+
+            if (duplicateExists)
+            {
+                return false;
+            }
+
+            existingExhibit.Name = exhibit.Name;
+            existingExhibit.Images = exhibit.Images;
+            existingExhibit.Description = exhibit.Description;
+            existingExhibit.ShortDescription = exhibit.ShortDescription;
+            existingExhibit.MuseumHallId = exhibit.MuseumHallId;
+            existingExhibit.CultureEra = exhibit.CultureEra;
+            existingExhibit.FindLocation = exhibit.FindLocation;
+            existingExhibit.Materials = exhibit.Materials;
+            existingExhibit.Technique = exhibit.Technique;
+            existingExhibit.Dimensions = exhibit.Dimensions;
+            existingExhibit.Weight = exhibit.Weight;
+            existingExhibit.Quantity = exhibit.Quantity;
+            existingExhibit.Storage = exhibit.Storage;
+            existingExhibit.Model3DUrl = exhibit.Model3DUrl;
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
 
         public async Task<bool> DeleteExhibit(Guid id, CancellationToken cancellationToken)
         {

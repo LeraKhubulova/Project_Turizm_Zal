@@ -45,6 +45,118 @@ namespace Project_Turizm_Zal.Controllers
             var halls = await _hallService.GetAllHallsWithExhibits(cancellationToken);
             return View(halls);
         }
+        [HttpGet]
+        public async Task<IActionResult> EditExhibit(Guid id, CancellationToken cancellationToken)
+        {
+            var exhibit = await _hallService.GetExhibitById(id, cancellationToken);
+
+            if (exhibit == null)
+            {
+                return NotFound();
+            }
+
+            var halls = await _hallService.GetAllHalls(cancellationToken);
+
+            var model = new EditExhibitViewModel
+            {
+                Id = exhibit.Id,
+                MuseumHallId = exhibit.MuseumHallId,
+                Halls = halls,
+                Name = exhibit.Name,
+                ExistingImagePath = exhibit.Images.FirstOrDefault() ?? "",
+                Description = exhibit.Description,
+                ShortDescription = exhibit.ShortDescription,
+                CultureEra = exhibit.CultureEra,
+                FindLocation = exhibit.FindLocation,
+                Materials = exhibit.Materials,
+                Technique = exhibit.Technique,
+                Dimensions = exhibit.Dimensions,
+                Weight = exhibit.Weight,
+                Quantity = exhibit.Quantity,
+                Storage = exhibit.Storage,
+                Model3DUrl = exhibit.Model3DUrl
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditExhibit(EditExhibitViewModel model, CancellationToken cancellationToken)
+        {
+            if (model.Id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            if (model.MuseumHallId == Guid.Empty)
+            {
+                ViewBag.Error = "Выберите зал";
+                model.Halls = await _hallService.GetAllHalls(cancellationToken);
+                return View(model);
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Name) ||
+                string.IsNullOrWhiteSpace(model.Description) ||
+                string.IsNullOrWhiteSpace(model.ShortDescription))
+            {
+                ViewBag.Error = "Заполните обязательные поля";
+                model.Halls = await _hallService.GetAllHalls(cancellationToken);
+                return View(model);
+            }
+
+            var imagePath = model.ExistingImagePath;
+
+            if (model.ImageFile != null && model.ImageFile.Length > 0)
+            {
+                var newImagePath = await _fileService.SaveImageAsync(
+                    model.ImageFile,
+                    "exhibits",
+                    cancellationToken);
+
+                if (newImagePath == null)
+                {
+                    ViewBag.Error = "Загрузите изображение экспоната в формате jpg, jpeg, png или webp. Размер файла не должен превышать 5 МБ";
+                    model.Halls = await _hallService.GetAllHalls(cancellationToken);
+                    return View(model);
+                }
+
+                imagePath = newImagePath;
+            }
+
+            var exhibit = new Exhibit
+            {
+                Id = model.Id,
+                MuseumHallId = model.MuseumHallId,
+                Name = model.Name.Trim(),
+                Images = string.IsNullOrWhiteSpace(imagePath)
+                    ? new List<string>()
+                    : new List<string> { imagePath },
+                Description = model.Description.Trim(),
+                ShortDescription = model.ShortDescription.Trim(),
+                CultureEra = model.CultureEra?.Trim(),
+                FindLocation = model.FindLocation?.Trim(),
+                Materials = model.Materials?.Trim(),
+                Technique = model.Technique?.Trim(),
+                Dimensions = model.Dimensions?.Trim(),
+                Weight = model.Weight?.Trim(),
+                Quantity = model.Quantity?.Trim(),
+                Storage = model.Storage?.Trim(),
+                Model3DUrl = model.Model3DUrl?.Trim()
+            };
+
+            var result = await _hallService.UpdateExhibit(exhibit, cancellationToken);
+
+            if (!result)
+            {
+                ViewBag.Error = "Не удалось сохранить изменения. Возможно, в выбранном зале уже есть экспонат с таким названием";
+                model.Halls = await _hallService.GetAllHalls(cancellationToken);
+                return View(model);
+            }
+
+            TempData["Success"] = "Экспонат успешно изменен";
+            return RedirectToAction("Exhibits");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

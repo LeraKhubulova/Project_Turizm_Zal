@@ -6,6 +6,8 @@ namespace Project_Turizm_Zal.Services
     {
         Task<List<MuseumHall>> GetAllHalls(CancellationToken cancellationToken);
 
+        Task<List<MuseumHall>> GetAllHallsWithExhibits(CancellationToken cancellationToken);
+
         Task<MuseumHall?> GetHallById(Guid id, CancellationToken cancellationToken);
 
         Task<MuseumHall?> GetHallWithExhibits(Guid id, CancellationToken cancellationToken);
@@ -17,7 +19,8 @@ namespace Project_Turizm_Zal.Services
         Task<bool> CreateHall(MuseumHall hall, CancellationToken cancellationToken);
 
         Task<bool> AddExhibit(Exhibit exhibit, CancellationToken cancellationToken);
-        Task<List<MuseumHall>> GetAllHallsWithExhibits(CancellationToken cancellationToken);
+
+        Task<bool> UpdateExhibit(Exhibit exhibit, CancellationToken cancellationToken);
 
         Task<bool> DeleteExhibit(Guid id, CancellationToken cancellationToken);
     }

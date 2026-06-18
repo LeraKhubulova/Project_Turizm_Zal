@@ -106,6 +106,13 @@
                                                     Открыть
                                                 </a>
 
+                                                <a asp-controller="Admin"
+                                                   asp-action="EditExhibit"
+                                                   asp-route-id="@exhibit.Id"
+                                                   class="btn btn-sm btn-warning">
+                                                    Редактировать
+                                                </a>
+
                                                 <form asp-controller="Admin"
                                                       asp-action="DeleteExhibit"
                                                       method="post"
