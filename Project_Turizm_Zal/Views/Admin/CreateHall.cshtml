@@ -1,0 +1,85 @@
+﻿@model Project_Turizm_Zal.Models.ViewModels.CreateHallViewModel
+
+@{
+    ViewData["Title"] = "Создание зала";
+}
+
+<div class="container py-5">
+    <h1 class="mb-4">Создание нового зала</h1>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+
+    <form asp-controller="Admin"
+          asp-action="CreateHall"
+          method="post"
+          enctype="multipart/form-data">
+
+        @Html.AntiForgeryToken()
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Название зала</label>
+            <input asp-for="Name" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Number" class="form-label">Номер зала</label>
+            <input asp-for="Number" type="number" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Slogan" class="form-label">Слоган</label>
+            <input asp-for="Slogan" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Краткое описание</label>
+            <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ImageFile" class="form-label">Изображение зала</label>
+            <input asp-for="ImageFile"
+                   type="file"
+                   class="form-control"
+                   accept=".jpg,.jpeg,.png,.webp"
+                   required />
+            <div class="form-text">
+                Допустимые форматы: jpg, jpeg, png, webp. Максимальный размер — 5 МБ.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="LeftColumnText" class="form-label">Основной текст зала</label>
+            <textarea asp-for="LeftColumnText"
+                      class="form-control"
+                      rows="6"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MapData" class="form-label">Данные карты</label>
+            <textarea asp-for="MapData"
+                      class="form-control"
+                      rows="5"
+                      placeholder='{"centerLat": 0, "centerLng": 0, "zoom": 5, "markers": []}'></textarea>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit"
+                    class="btn"
+                    style="background-color: #8b7355; border-color: #8b7355; color: white;">
+                Создать зал
+            </button>
+
+            <a asp-controller="Admin"
+               asp-action="Index"
+               class="btn btn-secondary">
+                Назад
+            </a>
+        </div>
+    </form>
+</div>

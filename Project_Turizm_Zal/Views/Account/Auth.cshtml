@@ -39,7 +39,6 @@
                 <div class="card-body p-4">
                     <div class="tab-content" id="authTabContent">
 
-                        <!-- Форма входа -->
                         <div class="tab-pane fade @(isLoginActive ? "show active" : "")"
                              id="login"
                              role="tabpanel">
@@ -51,7 +50,9 @@
                                 </div>
                             }
 
-                            <form asp-controller="Home" asp-action="Login" method="post">
+                            <form asp-controller="Account" asp-action="Login" method="post">
+                                @Html.AntiForgeryToken()
+
                                 <div class="mb-3">
                                     <label for="loginEmail" class="form-label">Email</label>
                                     <input type="email"
@@ -78,7 +79,6 @@
                             </form>
                         </div>
 
-                        <!-- Форма регистрации -->
                         <div class="tab-pane fade @(isRegisterActive ? "show active" : "")"
                              id="register"
                              role="tabpanel">
@@ -97,7 +97,9 @@
                                 </div>
                             }
 
-                            <form asp-controller="Home" asp-action="Register" method="post">
+                            <form asp-controller="Account" asp-action="Register" method="post">
+                                @Html.AntiForgeryToken()
+
                                 <div class="mb-3">
                                     <label for="regName" class="form-label">Имя</label>
                                     <input type="text"

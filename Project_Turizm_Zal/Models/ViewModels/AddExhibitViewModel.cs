@@ -1,20 +1,21 @@
-﻿namespace Project_Turizm_Zal.Models
+﻿using Microsoft.AspNetCore.Http;
+using Project_Turizm_Zal.Models;
+
+namespace Project_Turizm_Zal.Models.ViewModels
 {
-    public class Exhibit
+    public class AddExhibitViewModel
     {
-        public Guid Id { get; set; }
+        public Guid MuseumHallId { get; set; }
+
+        public List<MuseumHall> Halls { get; set; } = new List<MuseumHall>();
 
         public string Name { get; set; } = string.Empty;
 
-        public List<string> Images { get; set; } = new List<string>();
+        public IFormFile? ImageFile { get; set; }
 
         public string Description { get; set; } = string.Empty;
 
         public string ShortDescription { get; set; } = string.Empty;
-
-        public Guid MuseumHallId { get; set; }
-
-        public MuseumHall? MuseumHall { get; set; }
 
         public string? CultureEra { get; set; }
 
@@ -33,18 +34,5 @@
         public string? Storage { get; set; }
 
         public string? Model3DUrl { get; set; }
-
-        public Exhibit()
-        {
-        }
-
-        public Exhibit(string name, List<string> images, string description, Guid museumHallId)
-        {
-            Id = Guid.NewGuid();
-            Name = name;
-            Images = images;
-            Description = description;
-            MuseumHallId = museumHallId;
-        }
     }
 }

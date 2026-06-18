@@ -1,29 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Project_Turizm_Zal.Data;
-using Project_Turizm_Zal.Models;
-using System;
-using System.Threading.Tasks;
+using Project_Turizm_Zal.Services;
 
 namespace Project_Turizm_Zal.Controllers
 {
     public class ExhibitsController : Controller
     {
-        private readonly MuseumContext _context;
+        private readonly IHallService _hallService;
 
-        public ExhibitsController(MuseumContext context)
+        public ExhibitsController(IHallService hallService)
         {
-            _context = context;
+            _hallService = hallService;
         }
 
-       
-        public async Task<IActionResult> Details(Guid id)
+        public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken)
         {
-            var exhibit = await _context.Exhibits
-                .Include(e => e.MuseumHall)
-                .FirstOrDefaultAsync(e => e.Id == id);
+            var exhibit = await _hallService.GetExhibitWithHall(id, cancellationToken);
 
-            if (exhibit == null) return NotFound();
+            if (exhibit == null)
+            {
+                return NotFound();
+            }
 
             return View(exhibit);
         }

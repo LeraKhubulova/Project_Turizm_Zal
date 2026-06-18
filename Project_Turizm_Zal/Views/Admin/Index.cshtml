@@ -1,6 +1,62 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Панель администратора";
+}
 
-<div>
-    admin admin
+<div class="container py-5">
+    <h1 class="mb-4">Панель администратора</h1>
 
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h4 class="card-title">Создать зал</h4>
+                    <p class="card-text">
+                        Добавление нового тематического зала в онлайн-музей.
+                    </p>
+
+                    <a asp-controller="Admin"
+                       asp-action="CreateHall"
+                       class="btn"
+                       style="background-color: #8b7355; border-color: #8b7355; color: white;">
+                        Создать зал
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h4 class="card-title">Добавить экспонат</h4>
+                    <p class="card-text">
+                        Добавление экспоната в один из существующих залов.
+                    </p>
+
+                    <a asp-controller="Admin"
+                       asp-action="AddExhibit"
+                       class="btn"
+                       style="background-color: #8b7355; border-color: #8b7355; color: white;">
+                        Добавить экспонат
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h4 class="card-title">Управление экспонатами</h4>
+                    <p class="card-text">
+                        Просмотр всех экспонатов и удаление ненужных записей.
+                    </p>
+
+                    <a asp-controller="Admin"
+                       asp-action="Exhibits"
+                       class="btn btn-danger">
+                        Управление экспонатами
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

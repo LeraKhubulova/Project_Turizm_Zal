@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="~/Project_Turizm_Zal.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @{
+        var isLoggedIn = Context.Session.GetString("UserEmail") != null;
+        var userName = Context.Session.GetString("UserName") ?? "";
+        var userRole = Context.Session.GetString("UserRole") ?? "";
+    }
     <header>
         <nav class="light-nav">
             <div class="nav-container-wide">
@@ -24,8 +29,36 @@
                         <a class="nav-link-dark" asp-controller="Home" asp-action="About">О музее</a>
                     </div>
                     <div class="auth-buttons">
-                        <a class="btn-login" asp-controller="Home" asp-action="Auth">Вход</a>
-                        <a class="btn-register" asp-controller="Home" asp-action="Auth">Регистрация</a>
+                        @if (isLoggedIn)
+                        {
+                            @if (userRole == "Admin")
+                            {
+                                <a class="btn-login" asp-controller="Admin" asp-action="Index">
+                                    Админка
+                                </a>
+                            }
+
+                            <span class="nav-link-dark">
+                                @userName
+                            </span>
+
+                            <a class="btn-register" asp-controller="Account" asp-action="Logout">
+                                Выйти
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn-login" asp-controller="Account" asp-action="Auth">
+                                Вход
+                            </a>
+
+                            <a class="btn-register"
+                               asp-controller="Account"
+                               asp-action="Auth"
+                               asp-route-tab="Register">
+                                Регистрация
+                            </a>
+                        }
                     </div>
                 </div>
             </div>

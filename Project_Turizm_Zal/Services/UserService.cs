@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Project_Turizm_Zal.Data;
 using Project_Turizm_Zal.Models;
 using static Project_Turizm_Zal.Models.User;
@@ -17,24 +16,37 @@ namespace Project_Turizm_Zal.Services
 
         public async Task<bool> Register(User user, CancellationToken cancellationToken)
         {
-            if (await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id, cancellationToken) != null) return false;
-            if (user.Password == "admin" && user.Email == "admin@admin.com") user.Role = UserRole.Admin;
+            var exists = await _context.Users
+                .AnyAsync(u => u.Email == user.Email, cancellationToken);
+
+            if (exists)
+            {
+                return false;
+            }
+
+            if (user.Email == "admin@admin.com" && user.Password == "admin")
+            {
+                user.Role = UserRole.Admin;
+            }
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync(cancellationToken);
+
             return true;
         }
 
-        public async Task<User> Login(string email, string password, CancellationToken cancellationToken)
+        public async Task<User?> Login(string email, string password, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password, cancellationToken);
-            if (user == null) throw new Exception("Wrong email or password");
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email && u.Password == password, cancellationToken);
+
             return user;
         }
 
         public async Task<bool> IsUserExists(string email, CancellationToken cancellationToken)
         {
-            var result = await _context.Users.AnyAsync(u => u.Email == email, cancellationToken);
-            return result;
+            return await _context.Users
+                .AnyAsync(u => u.Email == email, cancellationToken);
         }
     }
 }

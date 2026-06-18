@@ -13,47 +13,117 @@ namespace Project_Turizm_Zal.Services
             _context = context;
         }
 
-        public async Task<MuseumHall> GetHallById(Guid id, CancellationToken cancellationToken)
+        public async Task<List<MuseumHall>> GetAllHalls(CancellationToken cancellationToken)
         {
-            var task = await _context.Halls
+            return await _context.Halls
                 .AsNoTracking()
-                .FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
-            if (task == null)
-            {
-                throw new NullReferenceException("Wrong hall id");
-            }
-            return task;
+                .OrderBy(h => h.Number)
+                .ToListAsync(cancellationToken);
         }
 
-        //public async Task<Exhibition> GetExhibitionById(Guid id, CancellationToken cancellationToken)
-        //{
-        //    var task = await _context.Exhibitions
-        //        .AsNoTracking()
-        //        .FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
-        //    if (task == null)
-        //    {
-        //        throw new NullReferenceException("Wrong exhibition id");
-        //    }
-        //    return task;
-        //}
-        public async Task<Exhibit> GetExhibitById(Guid id, CancellationToken cancellationToken)
+        public async Task<List<MuseumHall>> GetAllHallsWithExhibits(CancellationToken cancellationToken)
         {
-            var task = await _context.Exhibits
+            return await _context.Halls
+                .AsNoTracking()
+                .Include(h => h.Exhibits)
+                .OrderBy(h => h.Number)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<MuseumHall?> GetHallById(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.Halls
                 .AsNoTracking()
                 .FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
-            if (task == null)
-            {
-                throw new NullReferenceException("Wrong exhibit id");
-            }
-            return task;
         }
-        public async Task<bool> AddExhibit(Exhibit exhibit, CancellationToken cancellationToken)
+
+        public async Task<MuseumHall?> GetHallWithExhibits(Guid id, CancellationToken cancellationToken)
         {
-            if (await _context.Exhibits.FirstOrDefaultAsync(u => u.Id == exhibit.Id) != null) return false;
-            _context.Exhibits.Add(exhibit);
+            return await _context.Halls
+                .AsNoTracking()
+                .Include(h => h.Exhibits)
+                .FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
+        }
+
+        public async Task<Exhibit?> GetExhibitById(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.Exhibits
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        }
+
+        public async Task<Exhibit?> GetExhibitWithHall(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.Exhibits
+                .AsNoTracking()
+                .Include(e => e.MuseumHall)
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        }
+
+        public async Task<bool> CreateHall(MuseumHall hall, CancellationToken cancellationToken)
+        {
+            var exists = await _context.Halls
+                .AnyAsync(h => h.Name == hall.Name || h.Number == hall.Number, cancellationToken);
+
+            if (exists)
+            {
+                return false;
+            }
+
+            if (hall.Id == Guid.Empty)
+            {
+                hall.Id = Guid.NewGuid();
+            }
+
+            _context.Halls.Add(hall);
             await _context.SaveChangesAsync(cancellationToken);
+
             return true;
         }
 
+        public async Task<bool> AddExhibit(Exhibit exhibit, CancellationToken cancellationToken)
+        {
+            var hallExists = await _context.Halls
+                .AnyAsync(h => h.Id == exhibit.MuseumHallId, cancellationToken);
+
+            if (!hallExists)
+            {
+                return false;
+            }
+
+            var exhibitExists = await _context.Exhibits
+                .AnyAsync(e => e.Name == exhibit.Name && e.MuseumHallId == exhibit.MuseumHallId, cancellationToken);
+
+            if (exhibitExists)
+            {
+                return false;
+            }
+
+            if (exhibit.Id == Guid.Empty)
+            {
+                exhibit.Id = Guid.NewGuid();
+            }
+
+            _context.Exhibits.Add(exhibit);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
+
+        public async Task<bool> DeleteExhibit(Guid id, CancellationToken cancellationToken)
+        {
+            var exhibit = await _context.Exhibits
+                .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+
+            if (exhibit == null)
+            {
+                return false;
+            }
+
+            _context.Exhibits.Remove(exhibit);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
     }
 }
