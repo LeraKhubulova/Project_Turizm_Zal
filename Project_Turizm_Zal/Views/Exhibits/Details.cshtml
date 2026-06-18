@@ -63,12 +63,31 @@
         </div>
 
         
+        
         <div style="margin-top: 2rem;">
             <h3 style="font-size: 1.3rem; font-weight: 600; border-left: 4px solid #d4af37; padding-left: 20px;">Описание</h3>
             <p style="line-height: 1.6; color: #444; padding-left: 24px;">@Model.Description</p>
         </div>
 
-        
+        @if (!string.IsNullOrEmpty(Model.Model3DUrl))
+        {
+            <div style="margin-top: 2rem;">
+                <h3 style="font-size: 1.3rem; font-weight: 600; border-left: 4px solid #d4af37; padding-left: 20px;">3D-модель</h3>
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 1rem;">
+                    <iframe src="@Model.Model3DUrl"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"
+                            allowfullscreen
+                            allow="autoplay; fullscreen; vr"
+                            loading="lazy">
+                    </iframe>
+                </div>
+                <p style="color: #999; font-size: 0.85rem; margin-top: 0.5rem; padding-left: 24px;">
+                    <i class="fas fa-rotate"></i> Вращайте мышью, чтобы осмотреть модель
+                </p>
+            </div>
+        }
+
+
         <div style="margin-top: 2rem;">
             <a asp-controller="Halls" asp-action="Details" asp-route-id="@Model.MuseumHallId" class="btn-custom">Назад в зал</a>
         </div>
